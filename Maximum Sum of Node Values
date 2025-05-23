@@ -1,0 +1,23 @@
+#define ll long long
+class Solution {
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        int n  = nums.size();
+        ll sum = 0;
+        int mindiff = INT_MAX;
+        int cnt = 0;
+        for(int i=0; i<n; i++){
+            int xorr = nums[i]^k;
+            mindiff = min(mindiff, abs(xorr - nums[i]));
+            if(xorr > nums[i]){
+                cnt++; sum += xorr;
+            }
+            else sum+=nums[i];
+
+        }
+        if(cnt%2==0){
+            return sum;
+        }
+        return sum - mindiff;
+    }
+};
