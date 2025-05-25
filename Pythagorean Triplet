@@ -1,0 +1,29 @@
+class Solution {
+  public:
+     bool pythagoreanTriplet(vector<int>& arr) {
+        // mr md sohel
+        
+       int n = arr.size();
+        if (n < 3) return false;  
+        vector<long long> sq(n);
+        unordered_set<long long> sqSet;
+
+        for (int i = 0; i < n; i++) {
+            sq[i] = 1LL * arr[i] * arr[i];   
+            sqSet.insert(sq[i]);             
+        }
+
+       
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                long long sum = sq[i] + sq[j];  
+                if (sqSet.find(sum) != sqSet.end()) {
+                   
+                    return true;   
+                }
+            }
+        }
+
+        return false;
+    }
+};
