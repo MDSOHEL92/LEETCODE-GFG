@@ -1,0 +1,29 @@
+
+class Solution {
+  public:
+    bool isPerfect(Node *root) {
+        // mrmdsohel
+        if(root==NULL){
+            return true;
+        }
+        int level=0;
+        queue<Node*>q;
+        bool flag =false;
+        q.push(root);
+        while(!q.empty()){
+            int el=pow(2,level);
+            int n = q.size();
+            
+            if(n==el){flag=true;}
+            else{flag=false;}
+            for(int i=0; i<n; i++){
+                Node*temp=q.front();
+                q.pop();
+                if(temp->left){q.push(temp->left);}
+                if(temp->right){q.push(temp->right);}
+            }
+            level++;
+        }
+        return flag;
+    }
+};
