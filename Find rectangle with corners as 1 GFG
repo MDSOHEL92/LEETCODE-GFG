@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    bool ValidCorner(vector<vector<int> >& mat) {
+        // mrmdsohel
+        int r = mat.size();
+        int c = mat[0].size();
+        
+        unordered_set<string> st;
+        
+        for(int i=0; i<r; i++){
+            vector<int> cols;
+            
+            for(int j=0; j<c; j++){
+                if(mat[i][j] == 1){
+                    cols.push_back(j);
+                }
+            }
+            for(int x=0; x<cols.size(); x++){
+                for(int y=x+1; y<cols.size(); y++){
+                    string valid_pair = to_string(cols[x]) +"-" + to_string(cols[y]);
+                    
+                    if(st.count(valid_pair)){
+                        return true;
+                    }
+                    st.insert(valid_pair);
+                }
+            }
+        }
+        return false;
+        
+    }
+};
