@@ -1,0 +1,18 @@
+Find n/k th node in Linked list
+class Solution {
+  public:
+    int fractional_node(struct Node *head, int k) {
+        // mrmdsohel
+        Node* slow =NULL;
+        Node* fast =head;
+        int i = 0;
+        while(fast){
+            if(i%k == 0){
+                slow = (slow == NULL) ? head : slow->next;
+            }
+            i++;
+            fast = fast->next;
+        }
+        return slow->data;
+    }
+};
