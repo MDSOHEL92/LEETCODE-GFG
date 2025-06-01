@@ -1,0 +1,18 @@
+
+class Solution {
+public:
+#define ll long long
+    long long distributeCandies(int n, int limit) {
+        ll res=0;
+        for(int x=0;x<=min(n,limit);x++)
+        {
+            ll left=n-x;
+            ll maxL=min((ll)limit, left);
+            ll minL=left-maxL;
+            if(minL>maxL)
+               continue;
+            res+= (maxL-minL+1);  
+        }
+        return res;
+    
+};
