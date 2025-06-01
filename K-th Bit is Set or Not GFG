@@ -1,0 +1,8 @@
+class Solution {
+  public:
+    bool checkKthBit(int n, int k) {
+        // mrmdsohel
+        return (n&(1<<k));
+        
+    }
+};
