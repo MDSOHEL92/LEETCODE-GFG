@@ -1,0 +1,52 @@
+Max Difference You Can Get From Changing an Integer
+class Solution {
+public:
+    int maxDiff(int num) {
+         string s=to_string(num);
+        char c;   string s1=s;
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]!='9')
+            {
+                c=s[i];break;
+            }
+        }
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]==c)
+                s[i]='9';
+        }
+        int n=stoi(s);
+       if(s1[0]>'1')
+     {  
+            for(int i=1;i<s1.size();i++)
+       {
+           if(s1[i]==s1[0])
+              s1[i]='1';
+       }
+            s1[0]='1';
+        }
+		
+       else
+       {  
+	   for(int i=1;i<s1.size();i++)
+       {
+           if(s1[i]!='0'&&s1[i]!=s1[0])
+              {  c=s1[i];break;
+           }
+             
+       }
+       for(int i=1;i<s1.size();i++)
+       {
+           if(s1[i]==c&&s1[i]!=s1[0])
+              { s1[i]='0';
+           }
+             
+       }
+       }
+          
+        int n1=stoi(s1);
+        //cout<<n<<" "<<n1;
+        return n-n1;
+    }
+};
