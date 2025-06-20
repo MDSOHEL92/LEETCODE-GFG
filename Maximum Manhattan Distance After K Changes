@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int maxDistance(string s, int k) {
+        int ans = 0;
+        for (char hor : {'E', 'W'}) {
+            for (char vert : {'N', 'S'}) {
+                int K = k;
+                map<char, int> m;
+
+                for (auto it : s) {
+                    if (it == 'E' || it == 'W') {
+                        if (K > 0) {
+                            m[hor]++;
+                            K -= (hor != it);
+                        } else {
+                            m[it]++;
+                        }
+                    }
+                    if (it == 'N' || it == 'S') {
+                        if (K > 0) {
+                            m[vert]++;
+                            K -= (vert != it);
+                        } else {
+                            m[it]++;
+                        }
+                    }
+                    ans = max(ans, abs(m['N'] - m['S']) + abs(m['E'] - m['W']));
+                }
+            }
+        }
+        return ans;
+    }
+};
