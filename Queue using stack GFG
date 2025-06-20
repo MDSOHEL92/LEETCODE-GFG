@@ -1,0 +1,41 @@
+// User function Template for C++
+
+class Queue {
+    stack<int> input, output;
+
+  public:
+    void enqueue(int x) {
+        // mrmdsohel
+        input.push(x);
+    }
+
+    int dequeue() {
+        // mrmdsohel
+        
+          if(input.empty()) {
+            return -1;
+        }
+        
+        else {
+            
+            while(!input.empty()) {
+                
+                int top = input.top();
+                input.pop();
+                
+                output.push(top);
+            }
+            
+            int ans = output.top();
+            output.pop();
+            
+            while(!output.empty()) {
+                int top = output.top();
+                output.pop();
+                
+                input.push(top);
+            }
+            return ans;
+        }
+    }
+};
