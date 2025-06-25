@@ -1,0 +1,35 @@
+class Solution {
+  public:
+   bool check(vector<int>&freq){
+        int prev=0;
+        for(int i=0;i<26;i++){
+            if(prev==0 && freq[i]){
+                prev=freq[i];
+            }
+            else if(freq[i]!=0 && freq[i]!=prev){
+                return false;
+            }
+        }
+        return true;
+    }
+    bool sameFreq(string& s) {
+        // mrmdsohel
+        
+           vector<int>freq(26,0);
+        for(int i=0;i<s.size();i++){
+            freq[s[i]-'a']++;
+        }
+        if(check(freq)) return true;
+        for(int i=0;i<26;i++){
+            if(freq[i]){
+                freq[i]--;
+                if(check(freq)){
+                    return true;
+                }
+                freq[i]++;
+            }
+        }
+        return false;
+        
+    }
+};
