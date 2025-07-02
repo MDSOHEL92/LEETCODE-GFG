@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int possibleStringCount(string s, int k) {
+        int n = s.length();
+        const int MOD = 1e9 + 7;
+
+        vector<int> groupCounts;
+        int currentCount = 0;
+        char currentChar = s[0];
+        for (int i = 0; i < n; i++) {
+            if (s[i] != currentChar) {
+                groupCounts.push_back(currentCount);
+                currentChar = s[i];
+                currentCount = 0;
+            }
+            currentCount++;
+        }
+        groupCounts.push_back(currentCount);
+
+        long long totalWays = 1;
+        for (auto count : groupCounts) {
+            totalWays = (totalWays * count) % MOD;
+        }
+        if (groupCounts.size() >= k) {
+            return totalWays;
+        }
+
+        int requiredExtra = k - 1 - groupCounts.size();
+
+        vector<long long> dp(k + 1, 0);
+        dp[0] = 1;
+
+        for (auto count : groupCounts) {
+            vector<long long> prefix(k + 1, 0);
+
+            for (int i = 0; i <= requiredExtra; i++) {
+                prefix[i + 1] = (prefix[i + 1] + dp[i]) % MOD;
+                prefix[min(k, i + count)] =
+                    (prefix[min(k, i + count)] - dp[i] + MOD) % MOD;
+            }
+            for (int i = 1; i <= requiredExtra; i++) {
+                prefix[i] = (prefix[i] + prefix[i - 1]) % MOD;
+            }
+
+            for (int i = 0; i <= requiredExtra; i++) {
+                dp[i] = (dp[i] + prefix[i]) % MOD;
+            }
+        }
+        for (int i = 0; i <= requiredExtra; i++) {
+            totalWays = (totalWays - dp[i] + MOD) % MOD;
+        }
+
+        return totalWays;
+    }
+};
