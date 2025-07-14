@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int matchPlayersAndTrainers(vector<int>& pl, vector<int>& tr) {
+        multiset<int> s;
+        int count = 0;
+        for (int i = 0; i < tr.size(); i++)
+            s.insert(tr[i]);
+        for (int i = 0; i < pl.size(); i++) {
+            auto it = s.lower_bound(pl[i]);
+            if (it != s.end())
+                count++, s.erase(s.find(*it));
+        }
+        return count;
+    }
+};
