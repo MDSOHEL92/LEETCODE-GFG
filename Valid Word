@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool isValid(string word) {
+        if (word.size() < 3)
+            return false;
+        bool cons = false, vowel = false;
+        string vowels = "aeiouAEIOU";
+        for (auto x : word) {
+            if (!isalnum(x))
+                return false;
+            if (isdigit(x))
+                continue;
+            else {
+                if (vowels.contains(x))
+                    vowel = true;
+                else
+                    cons = true;
+            }
+        }
+        return cons && vowel;
+    }
+};
