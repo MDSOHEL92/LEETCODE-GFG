@@ -1,0 +1,52 @@
+class Solution {
+public:
+
+    int func(vector<int>& a , int l  , int f , int s ) {
+        int n = a.size() ; 
+        int find =  f ; 
+        int cnt = 0 ; 
+        for(int i  =  l  ; i < n ; i++) {
+            if(a[i] == find) {
+                if(find == f) {
+                    find =  s ; 
+                }
+                else {
+                    find =  f  ;
+                } 
+                cnt++ ;
+            }
+        }
+        return cnt ; 
+    } 
+
+
+
+    int maximumLength(vector<int>& a, int k) {
+        vector<int> rem(k, 0) ; 
+        int n =  a.size() ;
+        int maxi = 0 ; 
+        for(int i = 0 ; i < n ; i++) {
+            a[i] =  a[i]%k ; 
+            rem[a[i]]++ ; 
+            maxi = max(maxi , rem[a[i]]) ; 
+        }
+        cout << maxi  <<  endl; 
+        set<pair<int , int>> seen  ;
+        for(int i = 0 ; i < n -1  ; i++) {
+            for(int j = i +1  ; j < n ; j++) {
+                int f =  a[i] ; 
+                int s =  a[j] ; 
+                pair<int , int> p = {f , s} ; 
+                pair<int , int> p1 = {s , f} ; 
+                if(seen.find(p) !=  seen.end() || (seen.find(p1) !=  seen.end()) ) {
+                    continue ; 
+                }
+                int cnt =  func(a , j+1  , f ,s ) ; 
+                cnt += 2 ; 
+                maxi =  max(maxi , cnt) ; 
+                seen.insert({f , s}) ;
+            }
+        }
+        return maxi ;
+    }
+};
