@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    int subarraySum(vector<int>& arr) {
+        //mrmdsohel
+        int sum = 0;
+        int n = arr.size();
+        for(int i=0; i<arr.size(); i++){
+            int left = i;
+            int right = n-i-1;
+            int mult = left*right;
+            int total = left+right+mult+1;
+            sum = sum+total*arr[i];
+        }
+        return sum;
+    }
+};
