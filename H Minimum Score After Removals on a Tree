@@ -1,0 +1,71 @@
+class Solution {
+public:
+    vector<vector<int>> tree;
+    vector<int> p, xorSub, tin, tout;
+    int timer = 0;
+
+    void dfs(int u, int par, const vector<int>& nums) {
+        p[u] = par;
+        xorSub[u] = nums[u];
+        tin[u] = timer++;
+        for (int v : tree[u]) {
+            if (v == par) continue;
+            dfs(v, u, nums);
+            xorSub[u] ^= xorSub[v];
+        }
+        tout[u] = timer++;
+    }
+
+    bool isAncestor(int u, int v) {
+        return tin[u] <= tin[v] && tout[v] <= tout[u];
+    }
+
+    int minimumScore(vector<int>& nums, vector<vector<int>>& edges) {
+        int n = nums.size(), m = edges.size();
+        tree.assign(n, {});
+        p.assign(n, -1);
+        xorSub.assign(n, 0);
+        tin.assign(n, 0);
+        tout.assign(n, 0);
+
+        for (auto& e : edges) {
+            tree[e[0]].push_back(e[1]);
+            tree[e[1]].push_back(e[0]);
+        }
+
+        dfs(0, -1, nums);
+        int totalXor = xorSub[0];
+        int ans = INT_MAX;
+
+        for (int i = 0; i < m; ++i) {
+            int a1 = edges[i][0], b1 = edges[i][1];
+            if (p[a1] != b1 && p[b1] == a1) swap(a1, b1);
+
+            for (int j = i + 1; j < m; ++j) {
+                int a2 = edges[j][0], b2 = edges[j][1];
+                if (p[a2] != b2 && p[b2] == a2) swap(a2, b2);
+
+                int s1 = xorSub[a1];
+                int s2 = xorSub[a2];
+                int s3;
+
+                if (isAncestor(a1, a2)) {
+                    s2 = xorSub[a2];
+                    s3 = totalXor ^ s1;
+                    s1 ^= s2;
+                } else if (isAncestor(a2, a1)) {
+                    s1 = xorSub[a1];
+                    s3 = totalXor ^ s2;
+                    s2 ^= s1;
+                } else {
+                    s3 = totalXor ^ s1 ^ s2;
+                }
+
+                int mx = max({s1, s2, s3});
+                int mn = min({s1, s2, s3});
+                ans = min(ans, mx - mn);
+            }
+        }
+        return ans;
+    }
+};
