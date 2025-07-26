@@ -1,0 +1,62 @@
+class Solution{
+public:
+    long long maxSubarrays(int n, vector<vector<int>>& cp){
+        int m = cp.size();
+        vector<vector<int>> br(n+2);
+        vector<pair<int,int>> rr(m);
+
+        for(int i = 0; i < m; i++){
+            int a = cp[i][0], b = cp[i][1];
+            int l = min(a,b), r = max(a,b);
+            rr[i] = {l,r};
+            br[r].push_back(l);
+        }
+
+        vector<int> m1(n+2), m2(n+2);
+        int x1 = 0, x2 = 0;
+
+        for(int r = 1; r <= n; r++){
+            for(int l: br[r]){
+                if(l >= x1){ 
+                    x2 = x1; 
+                    x1 = l; 
+                }
+                else if(l > x2) x2 = l;
+            }
+            m1[r] = x1; m2[r] = x2;
+        }
+
+        long long bad = 0;
+        for(int r = 1; r <= n; r++) bad += m1[r];
+        long long tot  = 1LL * n * (n + 1) / 2;
+        long long good = tot - bad;
+
+        vector<vector<int>> pos(n+2);
+        vector<vector<long long>> ps(n+2);
+
+        for(int r = 1; r <= n; r++){
+            int l = m1[r], d = m1[r] - m2[r];
+            if(l > 0){
+                pos[l].push_back(r);
+                ps[l].push_back(d);
+            }
+        }
+
+        for(int l = 1; l <= n; l++){
+            for(int i = 1; i < ps[l].size(); i++) ps[l][i] += ps[l][i-1];
+        }
+
+        long long ans = 0;
+        for(int i = 0; i < m; i++){
+            int l = rr[i].first, r = rr[i].second;
+            auto &v = pos[l];
+            if(v.empty()) continue;
+            int idx = lower_bound(v.begin(), v.end(), r) - v.begin();
+            if(idx == v.size()) continue;
+            long long s = ps[l].back() - (idx > 0 ? ps[l][idx-1] : 0);
+            if(s > ans) ans = s;
+        }
+        
+        return good + ans;
+    }
+};
