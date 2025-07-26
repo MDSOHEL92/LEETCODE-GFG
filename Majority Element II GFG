@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    vector<int> findMajority(vector<int>& arr) {
+        // mrmdsohel
+        vector<int> arr1;
+        unordered_map<int,int>m1;
+        for(auto i:arr)m1[i]++;
+        for(auto i=m1.begin(); i!=m1.end();++i){
+            if((*i).second>arr.size()/3){
+                arr1.push_back((*i).first);
+            }
+        }
+        sort(arr1.begin(),arr1.end());
+        return arr1;
+    }
+};
