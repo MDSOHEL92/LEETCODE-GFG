@@ -1,0 +1,51 @@
+class Solution {
+  public:
+    vector<vector<int>> insertInterval(vector<vector<int>> &intervals,
+                                       vector<int> &newInterval) {
+        // mrmdsohel
+        
+        vector<vector<int>> ans;
+        map<int, int> m;
+
+        for (int i = 0; i < intervals.size(); i++) {
+            if (m.count(intervals[i][0]) != 0) {
+                m[intervals[i][0]] = max(m[intervals[i][0]], intervals[i][1]);
+
+            } else
+
+            {
+                m[intervals[i][0]] = intervals[i][1];
+            }
+        }
+
+        if (m.count(newInterval[0]) != 0) {
+            m[newInterval[0]] = max(m[newInterval[0]], newInterval[1]);
+
+        } else
+
+        {
+            m[newInterval[0]] = newInterval[1];
+        }
+
+        for (auto i : m) {
+            if (ans.size() != 0) {
+                if ((ans[ans.size() - 1][0] <= i.first &&
+                     ans[ans.size() - 1][1] > i.first) ||
+                    ans[ans.size() - 1][1] == i.first) {
+                    ans[ans.size() - 1][1] =
+                        max(ans[ans.size() - 1][1], i.second);
+                }
+
+                else {
+                    ans.push_back({i.first, i.second});
+                }
+
+            } else {
+
+                ans.push_back({i.first, i.second});
+            }
+        }
+
+        return ans;
+    }
+};
