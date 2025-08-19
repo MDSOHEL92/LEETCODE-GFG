@@ -1,0 +1,13 @@
+class Solution {
+public:
+    long long zeroFilledSubarray(vector<int>& nums) {
+        long long numberofWays = 0;
+        int tempCount = 0;
+        for(int x : nums){
+            if(x == 0) tempCount++;
+            else tempCount = 0;
+            numberofWays += tempCount;
+        }
+        return numberofWays;
+    }
+};
