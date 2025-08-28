@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<vector<int>> sortMatrix(vector<vector<int>>& grid) {
+        int n = grid.size();int m = grid[0].size();
+         // TOP
+        for(int i =1;i<m;i++){
+            vector<int> v;int p=0,q=i;
+            for(int j=0;j<n-i;j++){
+                v.push_back(grid[p][q]);
+                p++;q++;
+            }
+            sort(v.begin(),v.end());
+            p=0;q=i;
+            for(int j=0;j<n-i;j++){
+                grid[p][q]=v[p];
+                p++;q++;
+            }
+        }
+        // LEFT
+        for(int i =0;i<n;i++){
+            vector<int> v;int p=i,q=0;
+            for(int j=0;j<n-i;j++){
+                v.push_back(grid[p][q]);
+                p++;q++;
+            }
+            sort(v.rbegin(),v.rend());
+            p=i;q=0;
+            for(int j=0;j<n-i;j++){
+                grid[p][q]=v[q];
+                p++;q++;
+            }
+        }
+        return grid;
+    }
+};
