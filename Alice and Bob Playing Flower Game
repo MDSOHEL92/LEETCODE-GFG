@@ -1,0 +1,11 @@
+class Solution {
+public:
+    long long flowerGame(int n, int m) {
+        long long odds1 = (n + 1) / 2;
+        long long evens1 = n / 2;
+        long long odds2 = (m + 1) / 2;
+        long long evens2 = m / 2; 
+        
+        return odds1 * evens2 + odds2 * evens1;
+    }
+};
