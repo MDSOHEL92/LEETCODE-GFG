@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int sumOfModes(vector<int>& arr, int k) {
+        typedef pair<int,int> P;
+        int n = arr.size();
+        unordered_map<int,int> mp;
+        
+        // Custom comparator: larger freq first, smaller num if tie
+        auto cmp = [](const P &p1, const P &p2){
+            if(p1.first == p2.first)return p1.second > p2.second;// smaller number first if tie 
+            return p1.first < p2.first;  // larger freq first
+        };
+        
+        priority_queue<P, vector<P>, decltype(cmp)> pq(cmp);
+        
+        // Build initial frequency map
+        for(int i=0; i<k; i++) mp[arr[i]]++;
+        // Push initial frequencies
+        // first window
+        for(auto &it : mp) pq.push({it.second, it.first});
+        
+        int sum = pq.top().second;  // max freq element of first window
+        // sliding window start 
+        int i=0,j=k;
+        while(j < n){
+            int out = arr[i];  // element leaving window
+            int in = arr[j];   // element entering window
+            
+            // Update frequency map
+            mp[out]--;
+            mp[in]++;
+            
+            // Push new frequencies for outgoing and incoming elements
+            pq.push({mp[out], out});
+            pq.push({mp[in], in});
+            
+            // Remove stale top elements
+            while(!pq.empty() && pq.top().first != mp[pq.top().second])pq.pop();
+            
+            // Add current mode to sum
+            sum += pq.top().second;
+            i++; 
+            j++;
+        }
+        return sum;
+    }
+};
+
+ 
