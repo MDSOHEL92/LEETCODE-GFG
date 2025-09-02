@@ -1,0 +1,41 @@
+/*
+class Node {
+  public:
+    int data;
+    Node *next;
+
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+*/
+
+
+class Solution {
+  public:
+    Node* swapKth(Node* head, int k) {
+        // code here
+        int len = 0;
+        Node* temp = head;
+        while(temp){
+            len++;
+            temp = temp->next;
+        }
+        if(len < k) return head;
+        
+        Node* start = head;
+        int tempP = 1;
+        while (tempP < k){
+            start = start -> next;
+            tempP++;
+        }
+        len -= k;
+        Node* end = head;
+        while(len--){
+            end = end->next;
+        }
+        swap(start->data, end->data);
+        return head;
+    }
+};
