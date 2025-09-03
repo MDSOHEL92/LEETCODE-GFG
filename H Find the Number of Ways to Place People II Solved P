@@ -1,0 +1,24 @@
+from typing import List
+class Solution:
+    def numberOfPairs(self, points: List[List[int]]) -> int:
+        n = len(points)
+        
+        # sort by x ascending, if x same, y descending
+        points.sort(key=lambda p: (p[0], -p[1]))
+        
+        result = 0
+        for i in range(n):
+            aliceX, aliceY = points[i]
+            bestBobY = float('-inf')
+            for j in range(i + 1, n):
+                bobX, bobY = points[j]
+                
+                # bob must not be above Alice
+                if bobY > aliceY:
+                    continue
+                
+                # ensure no intermediate point invalidates the pair
+                if bobY > bestBobY:
+                    result += 1
+                    bestBobY = bobY
+        return result
