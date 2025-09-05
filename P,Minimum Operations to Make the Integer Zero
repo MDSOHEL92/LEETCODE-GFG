@@ -1,0 +1,8 @@
+class Solution:
+    def makeTheIntegerZero(self, num1: int, num2: int) -> int:
+        for k in range(37):
+            N = num1 - k * num2
+            Bits = sum(c == "1" for c in bin(N)[2:]) 
+            if Bits <= k <= N:
+                return k
+        return -1
