@@ -1,0 +1,11 @@
+class Solution:
+    def getNoZeroIntegers(self, n: int) -> List[int]:
+        e1 = 1
+        e2 = n-1
+        
+        for i in range(1,n):
+            if str(e1).count('0')==0 and str(e2).count('0')==0:
+                return [e1,e2]
+            else:
+                e1 = i
+                e2 = n-i
