@@ -1,0 +1,19 @@
+class Solution:
+    def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        cn_com = set() # cannot communicate
+
+        for u, v in friendships:
+            if not set(languages[u-1]) & set(languages[v-1]):
+                cn_com.add(u-1)
+                cn_com.add(v-1)
+
+        if not cn_com:
+            return 0
+
+
+        count = [0] * n
+        for person in cn_com:
+            for lang in languages[person]:
+                count[lang-1] += 1
+
+        return len(cn_com) - max(count)
