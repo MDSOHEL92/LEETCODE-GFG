@@ -1,0 +1,22 @@
+Sort Vowels in a String
+
+class Solution {
+public:
+    string sortVowels(string s) {
+        vector<int> vowelIndices;
+        vector<char> vowels;
+        string vowelSet = "aeiouAEIOU";
+
+        for (int i = 0; i < s.size(); ++i) {
+            if (vowelSet.find(s[i]) != string::npos) {
+                vowelIndices.push_back(i);
+                vowels.push_back(s[i]);
+            }
+        }
+        sort(vowels.begin(), vowels.end());
+        for (int i = 0; i < vowelIndices.size(); ++i) {
+            s[vowelIndices[i]] = vowels[i];
+        }
+        return s;
+    }
+};
