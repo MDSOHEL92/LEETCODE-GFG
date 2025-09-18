@@ -1,0 +1,64 @@
+class TaskManager {
+private :
+    priority_queue<pair<int,int>> pq ; //  priority - > task 
+    map<int,pair<int,int>> mp; // task - >  {priority , userid }
+    // looks like the taskid is uniqe : 
+
+public:
+    
+    TaskManager(vector<vector<int>>& tasks) {
+        // we can use >>>  ||  priority queue < pair<priority , taskid> > ||  to find the task to  execute 
+        // the problem in pq is we can not modify the {task id - > priority }
+        // we will  also maintain the map >>> ||  taskid to { priority and  user } || so that we can edit it : 
+        // now whenever i got some tasks from pq , which is modified ( i will ignore it ) : 
+        // there are no edge cases || given in the description || 
+        // let's start ::: 
+        for(auto  &i  : tasks ){
+            int uid = i[0] ; 
+            int tid = i[1] ; 
+            int priority = i[2]  ; 
+            mp[tid] = {priority , uid} ; 
+            pq.push({priority , tid } ) ; 
+        }
+    }
+    
+    void add(int userId, int taskId, int priority) {
+        mp[taskId] = {priority , userId} ; 
+        pq.push({priority , taskId } ) ;
+    }
+    
+    void edit(int taskId, int newPriority) {
+        mp[taskId].first = newPriority ;
+        pq.push({newPriority , taskId }) ; 
+    }
+    
+    void rmv(int taskId) {
+        mp.erase(taskId) ; 
+    }
+    
+    int execTop() {
+        while(!pq.empty()) {
+            pair<int,int>top = pq.top()  ;  pq.pop() ; 
+            int tid = top.second ; 
+            
+            // Check if the task exists in the map and the priority in the map
+            // matches the priority in the priority queue.
+            // This handles stale entries left by `edit` and `rmv`.
+            if(mp.count(tid) && mp[tid].first == top.first ) {
+                int userId = mp[tid].second;
+                mp.erase(tid); // Remove the task after it has been executed
+                return userId;
+            }
+        }
+        return -1 ;
+    }
+};
+
+/**
+ * Your TaskManager object will be instantiated and called as such:
+ * TaskManager* obj = new TaskManager(tasks);
+ * obj->add(userId,taskId,priority);
+ * obj->edit(taskId,newPriority);
+ * obj->rmv(taskId);
+ * int param_4 = obj->execTop();
+ */
