@@ -1,0 +1,18 @@
+int sub(int a, int b) {
+    // code here
+    return a-b;
+}
+
+int add(int a, int b) {
+    
+    // code here
+    return a+b;
+}
+
+void compute(int a, int b, int (*funP)(int, int)) {
+
+    
+    // print result as per function pointer
+    // code here
+    printf("%d\n", funP(a, b));
+}
