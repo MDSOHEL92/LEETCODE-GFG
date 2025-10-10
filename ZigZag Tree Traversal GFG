@@ -1,0 +1,50 @@
+/*
+class Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    vector<int> zigZagTraversal(Node* root) {
+        vector<int> result;
+        if (root == NULL) return result;
+        
+        queue<Node*> q;
+        q.push(root);
+        bool leftToRight = true; // direction flag
+        
+        while (!q.empty()) {
+            int size = q.size();
+            vector<int> level(size);
+            
+            for (int i = 0; i < size; i++) {
+                Node* curr = q.front();
+                q.pop();
+                
+                // Determine index based on current direction
+                int index = leftToRight ? i : (size - i - 1);
+                level[index] = curr->data;
+                
+                // Push child nodes for next level
+                if (curr->left) q.push(curr->left);
+                if (curr->right) q.push(curr->right);
+            }
+            
+            // Add current level to final result
+            for (int val : level) result.push_back(val);
+            
+            // Change direction for next level
+            leftToRight = !leftToRight;
+        }
+        
+        return result;
+    }
+};
