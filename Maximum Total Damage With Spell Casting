@@ -1,0 +1,30 @@
+class Solution {
+public:
+    long long maximumTotalDamage(vector<int>& power) {
+        map<int, int> freq;
+        for (int p : power) {
+            freq[p]++;
+        }
+        vector<int> powers;
+        for (auto& [val, _] : freq) {
+            powers.push_back(val);
+        }
+        int n = powers.size();
+        vector<long long> f(n, 0);
+        long long result = 0;
+
+        int ptr = -1;
+        long long maxPrev = 0;
+
+        for (int i = 0; i < n; i++) {
+            int curr = powers[i];
+            while (ptr + 1 < i && powers[ptr + 1] < curr - 2) {
+                ptr++;
+                maxPrev = max(maxPrev, f[ptr]);
+            }
+            f[i] = maxPrev + (long long)curr * freq[curr];
+            result = max(result, f[i]);
+        }
+        return result;
+    }
+};
