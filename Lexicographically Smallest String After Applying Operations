@@ -1,0 +1,26 @@
+class Solution {
+public:
+    char digAdd(char c, int a) { 
+        return (c - '0' + a) % 10 + '0'; 
+    }
+    string f(string s, int a, int b, unordered_set<string>& st) {
+        if (st.count(s))
+            return s;
+        st.insert(s);
+        string as = s;
+        for (int i = 1; i < s.size(); i += 2)
+            as[i] = digAdd(as[i], a);
+        string rs;
+        for (int i = b; i < s.size(); i++)
+            rs.push_back(s[i]);
+        for (int i = 0; i < b; i++)
+            rs.push_back(s[i]);
+        string af = f(as, a, b, st);
+        string rf = f(rs, a, b, st);
+        return min(af, rf);
+    }
+    string findLexSmallestString(string s, int a, int b) {
+        unordered_set<string> st;
+        return min(s, f(s, a, b, st));
+    }
+};
