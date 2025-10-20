@@ -1,0 +1,37 @@
+class Solution {
+  public:
+  vector<int> catalanDP(int n) {
+    vector<int> C(n + 1, 0);
+    C[0] = C[1] = 1;
+
+    for (int i = 2; i <= n; i++) {
+        for (int j = 0; j < i; j++)
+            C[i] += C[j] * C[i - j - 1];
+    }
+    return C;
+}
+    vector<int> countBSTs(vector<int>& arr) {
+        // Code here
+         int n = arr.size();
+    vector<int> result;
+    vector<int> C = catalanDP(n);
+
+    // Sort to maintain BST property
+    vector<int> sorted = arr;
+    sort(sorted.begin(), sorted.end());
+
+    for (int x : arr) {
+        // find position of x in sorted array
+        int pos = lower_bound(sorted.begin(), sorted.end(), x) - sorted.begin();
+
+        int leftSize = pos;
+        int rightSize = n - pos - 1;
+
+        int count = C[leftSize] * C[rightSize];
+        result.push_back(count);
+    }
+
+    return result;
+    }
+    
+};
