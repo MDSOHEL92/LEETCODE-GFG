@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    vector<int> topKFreq(vector<int> &arr, int k) {
+        // Code here
+        unordered_map<int, int> freqMap;
+        for(int num : arr){
+            freqMap[num]++;
+        }
+        auto cmp = [](pair<int, int>& a, pair<int, int>& b){
+            if(a.second == b.second) return a.first < b.first;
+            return a.second < b.second;
+        };
+        
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
+        for(auto& entry : freqMap){
+            pq.push(entry);
+        }
+        vector<int> result;
+        while(k-- > 0 && !pq.empty()){
+            result.push_back(pq.top(). first);
+            pq.pop();
+        }
+        return result;
+    }
+};
