@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    int minOperations(vector<int>& arr) {
+        // code here
+        priority_queue<double> maxHeap;
+        double sum = 0;
+        for(int num : arr){
+            maxHeap.push(num);
+            sum += num;
+        }
+        double target = sum / 2;
+        int operations = 0;
+        while (sum > target){
+            double maxVal = maxHeap.top();
+            maxHeap.pop();
+            sum -= maxVal / 2;
+            maxHeap.push(maxVal / 2);
+            operations++;
+            
+        }
+        return operations;
+    }
+};
