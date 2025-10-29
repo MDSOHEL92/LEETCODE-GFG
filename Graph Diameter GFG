@@ -1,0 +1,44 @@
+class Solution {
+  public:
+  pair<int, int> bfs(int start, vector<vector<int>>& adj, int V) {
+    vector<int> dist(V, -1);
+    queue<int> q;
+    q.push(start);
+    dist[start] = 0;
+    int farthestNode = start;
+
+    while (!q.empty()) {
+        int node = q.front();
+        q.pop();
+        for (int neigh : adj[node]) {
+            if (dist[neigh] == -1) {
+                dist[neigh] = dist[node] + 1;
+                q.push(neigh);
+                if (dist[neigh] > dist[farthestNode]) {
+                    farthestNode = neigh;
+                }
+            }
+        }
+    }
+    return {farthestNode, dist[farthestNode]};
+}
+
+    int diameter(int V, vector<vector<int>>& edges) {
+        // Code here
+        vector<vector<int>> adj(V);
+    for (auto& e : edges) {
+        adj[e[0]].push_back(e[1]);
+        adj[e[1]].push_back(e[0]);
+    }
+
+    // Step 1: First BFS to find farthest node from 0
+    auto first = bfs(0, adj, V);
+
+    // Step 2: Second BFS from that farthest node
+    auto second = bfs(first.first, adj, V);
+
+    // Step 3: Diameter = maximum distance found
+    return second.second;
+
+    }
+};
