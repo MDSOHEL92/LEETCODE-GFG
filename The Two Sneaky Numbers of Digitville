@@ -1,0 +1,14 @@
+class Solution {
+public:
+    vector<int> getSneakyNumbers(vector<int>& nums) {
+        vector<int> count(nums.size(), 0);
+        vector<int> sneaky;
+        for (int num : nums) {
+            count[num]++;
+            if (count[num] == 2) {
+                sneaky.push_back(num);
+            }
+        }
+        return sneaky;
+    }
+};
