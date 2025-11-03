@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    vector<int> safeNodes(int V, vector<vector<int>>& edges) {
+        // Code here
+        vector<vector<int>> graph(V);
+        vector<vector<int>> rev_graph(V);
+        for(auto& edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            rev_graph[edge[1]].push_back(edge[0]);
+        }
+        vector<int> out_degree(V, 0);
+        for(int i=0; i<V; ++i){
+            out_degree[i] = graph[i].size();
+        }
+        queue<int> q;
+        for(int i=0; i<V; ++i){
+            if(out_degree[i] == 0) q.push(i);
+        }
+        vector<int> safe;
+        while(!q.empty()){
+            int node = q.front(); q.pop();
+            safe.push_back(node);
+            for(int prev : rev_graph[node]){
+                if(--out_degree[prev] == 0){
+                    q.push(prev);
+                }
+            }
+        }
+        sort(safe.begin(), safe.end());
+        return safe;
+    }
+};
