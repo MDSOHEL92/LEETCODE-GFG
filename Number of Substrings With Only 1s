@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int numSub(string s) {
+        const int MOD = 1e9 + 7;
+        long long count = 0;
+        int consecutiveOnes = 0;
+
+        for (char c : s) {
+            if (c == '1') {
+                consecutiveOnes++;
+            } else {
+                if (consecutiveOnes > 0) {
+                    count = (count + (long long)consecutiveOnes *
+                                         (consecutiveOnes + 1) / 2) %
+                            MOD;
+                    consecutiveOnes = 0;
+                }
+            }
+        }
+        if (consecutiveOnes > 0) {
+            count = (count +
+                     (long long)consecutiveOnes * (consecutiveOnes + 1) / 2) %
+                    MOD;
+        }
+        return (int)count;
+    }
+};
