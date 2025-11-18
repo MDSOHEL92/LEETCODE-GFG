@@ -1,0 +1,41 @@
+class Solution {
+  public:
+    int countPaths(int V, vector<vector<int>>& edges) {
+        // code here
+            vector<vector<pair<int, int>>> graph(V);
+        for (auto& edge : edges) {
+            int u = edge[0], v = edge[1], time = edge[2];
+            graph[u].push_back({v, time});
+            graph[v].push_back({u, time}); // Undirected graph
+        }
+        
+        // Dijkstra's to find shortest distance and count paths
+        vector<int> dist(V, INT_MAX);
+        vector<int> paths(V, 0);
+        dist[0] = 0;
+        paths[0] = 1;
+        
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push({0, 0}); // {distance, node}
+        
+        while (!pq.empty()) {
+            auto [d, node] = pq.top();
+            pq.pop();
+            
+            if (d > dist[node]) continue; // Skip if outdated info
+            
+            for (auto& [neighbor, time] : graph[node]) {
+                int newDist = d + time;
+                if (newDist < dist[neighbor]) {
+                    dist[neighbor] = newDist;
+                    paths[neighbor] = paths[node];
+                    pq.push({newDist, neighbor});
+                } else if (newDist == dist[neighbor]) {
+                    paths[neighbor] = (paths[neighbor] + paths[node]);
+                }
+            }
+        }
+        
+        return paths[V-1];
+    }
+};
