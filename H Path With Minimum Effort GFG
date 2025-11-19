@@ -1,0 +1,54 @@
+class Solution {
+  public:
+      int dx[4] = {-1, 0, 1, 0};
+    int dy[4] = {0, -1, 0, 1};
+    
+    virtual bool isValid(int i, int j, int n, int m){
+      return (i>=0 && j>=0 && i<n && j<m);    
+    }
+    
+    virtual void fun(int &ans, int n, int m, vector<vector<int>> &mat, vector<vector<int>> &dist){
+      priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+      
+      dist[0][0] = 0;
+      pq.push({0, {0, 0}});
+      while(!pq.empty()){      
+          
+          auto [dif, pos] = pq.top(); pq.pop();
+          
+          int i = pos.first;
+          int j = pos.second;
+          
+          if(i==n-1 && j==m-1){
+            ans = dif;
+            return;  
+          }
+          
+          for(int k=0;k<4;k++){
+            int ni = i+dx[k];      
+            int nj = j+dy[k];
+            
+            if(isValid(ni, nj, n, m)){
+              int curDif = abs(mat[i][j] - mat[ni][nj]);
+              if(max(dif, curDif) < dist[ni][nj]){
+                dist[ni][nj] = max(dif, curDif);
+                pq.push({dist[ni][nj], {ni, nj}});
+              }
+                
+            }
+          }
+      }
+      return;
+    }
+    
+    virtual int minCostPath(vector<vector<int>>& mat) {
+      int n = mat.size();
+      int m = mat[0].size();
+      
+      vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
+      
+      int ans = INT_MAX;
+      fun(ans, n, m, mat, dist);
+      return ans;
+    }
+};
