@@ -1,0 +1,19 @@
+
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        int count = 0;
+        for (char a = 'a'; a <= 'z'; a++) {
+            int first = s.find(a);
+            int last = s.rfind(a);
+            if (first != string::npos && last != string::npos && first < last) {
+                unordered_set<char> between;
+                for (int i = first + 1; i < last; i++) {
+                    between.insert(s[i]);
+                }
+                count += between.size();
+            }
+        }
+        return count;
+    }
+};
