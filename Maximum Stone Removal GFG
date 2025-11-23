@@ -1,0 +1,49 @@
+Maximum Stone Removal
+class Solution {
+  public:
+    int maxRemove(vector<vector<int>>& stones) {
+        // Code here
+          int n = stones.size();
+        UnionFind uf(n);
+        
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1]) {
+                    uf.unionSets(i, j);
+                }
+            }
+        }
+        
+        int components = 0;
+        for (int i = 0; i < n; ++i) {
+            if (uf.find(i) == i) components++;
+        }
+        
+        return n - components;
+    }
+    
+private:
+    class UnionFind {
+    public:
+        vector<int> parent;
+        
+        UnionFind(int n) : parent(n) {
+            iota(parent.begin(), parent.end(), 0);
+        }
+        
+        int find(int x) {
+            if (parent[x] != x) {
+                parent[x] = find(parent[x]);
+            }
+            return parent[x];
+        }
+        
+        void unionSets(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+            if (rootX != rootY) {
+                parent[rootX] = rootY;
+            }
+        }
+    };
+};
