@@ -1,0 +1,27 @@
+class Solution:
+    def maxKDivisibleComponents(
+        self, n: int, edges: List[List[int]], values: List[int], k: int
+    ) -> int:
+
+        adjList = defaultdict(list)
+        ans = 0
+
+        for u, v in edges:
+            adjList[u].append(v)
+            adjList[v].append(u)
+
+        def dfs(node, parent):
+
+            total = values[node]
+
+            for ngbr in adjList[node]:
+                if ngbr != parent:
+                    total += dfs(ngbr, node)
+            if total % k == 0:
+                nonlocal ans
+                ans += 1
+                return 0
+            return total
+
+        dfs(0, -1)
+        return ans
