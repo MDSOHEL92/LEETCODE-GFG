@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) {
+        int n = nums.size();
+        long long totalSum = 0;
+        for (int num : nums)
+            totalSum += num;
+
+        int target = totalSum % p;
+        if (target == 0)
+            return 0; // sum is already divisible by p
+
+        unordered_map<int, int> prefixModIndex;
+        prefixModIndex[0] =
+            -1; // for handling cases where we start from beginning
+        long long prefixSum = 0;
+        int minLen = n; // initialize with max possible length
+
+        for (int i = 0; i < n; ++i) {
+            prefixSum += nums[i];
+            int mod = prefixSum % p;
+            int need = (mod - target + p) % p; // handle negative mod
+            if (prefixModIndex.count(need)) {
+                minLen = min(minLen, i - prefixModIndex[need]);
+            }
+            prefixModIndex[mod] = i;
+        }
+
+        return minLen == n ? -1 : minLen;
+    }
+};
