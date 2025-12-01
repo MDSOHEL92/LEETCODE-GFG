@@ -1,0 +1,23 @@
+class Solution {
+public:
+    long long maxRunTime(int n, vector<int>& batteries) {
+        long long sum = 0;
+        for (int b : batteries)
+            sum += b;
+        long long left = 0, right = sum / n + 1;
+
+        while (left + 1 < right) {
+            long long mid = left + (right - left) / 2;
+            long long extra = 0;
+            for (int b : batteries) {
+                extra += min((long long)b, mid);
+            }
+            if (extra >= mid * n) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+};
