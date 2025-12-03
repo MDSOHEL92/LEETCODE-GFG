@@ -1,0 +1,79 @@
+class Solution {
+  public:
+    int tsp(vector<vector<int>>& cost) {
+        // code here
+         int n = cost.size();
+        vector<vector<int>> dp(1 << n, vector<int>(n, INT_MAX));
+        dp[1][0] = 0; // Start at city 0 with mask = 1 (only city 0 is visited)
+
+        for (int mask = 1; mask < (1 << n); mask++) {
+            for (int i = 0; i < n; i++) {
+                if (!(mask & (1 << i))) continue; // City i is in the mask
+                for (int j = 0; j < n; j++) {
+                    if (i == j) continue;
+                    if (mask & (1 << j)) continue; // j is not visited yet
+                    int new_mask = mask | (1 << j);
+                    dp[new_mask][j] = min(dp[new_mask][j], dp[mask][i] + cost[i][j]);
+                }
+            }
+        }
+
+        // Calculate the minimum cost to return to city 0
+        int full_mask = (1 << n) - 1;
+        int ans = INT_MAX;
+        for (int i = 1; i < n; i++) {
+            ans = min(ans, dp[full_mask][i] + cost[i][0]);
+        }
+        return ans;
+    }
+};
+#######################################################################################################################################
+#######################################################################################################################################
+#######################################################################################################################################
+class Solution {
+  public:
+    int tsp(vector<vector<int>>& cost) {
+        // code here
+                int n=cost.size();
+        int N=1<<n;
+        const int INF=1e9;
+
+        vector<vector<int>> dp(N,vector<int>(n,INF));
+        
+        dp[1][0]=0;
+
+        for(int mask=0;mask<N;mask++){
+            
+            for(int i=0;i<n;i++){
+                
+                if(!(mask & (1<<i))){
+                    continue;
+                } 
+                
+                if(dp[mask][i]==INF){
+                    continue;
+                }
+
+                for(int j=0;j<n;j++){
+                    
+                    if(mask & (1<<j)){
+                        continue;
+                    } 
+                    
+                    int newMask=mask | (1<<j);
+                    dp[newMask][j]=min(dp[newMask][j],dp[mask][i]+cost[i][j]);
+                }
+            }
+        }
+
+        int ans=INF;
+        
+        for(int i=0;i<n;i++){
+            ans=min(ans,dp[(1<<n)-1][i]+cost[i][0]);
+        }
+        
+        return ans;
+    }
+};
+
+
