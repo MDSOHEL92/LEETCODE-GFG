@@ -1,0 +1,18 @@
+vclass Solution {
+  public:
+    vector<int> findDuplicates(vector<int>& arr) {
+        // code here
+        vector<int> duplicates;
+        unordered_map<int, int> countMap;
+        
+        for(int num : arr){
+            countMap[num]++;
+        }
+        for(auto& pair : countMap){
+            if(pair.second == 2){
+                duplicates.push_back(pair.first);
+            }
+        }
+        return duplicates;
+    }
+};
