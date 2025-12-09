@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int specialTriplets(vector<int>& nums) {
+        unordered_map<int, vector<int>> mpp;
+        int mod = 1e9 + 7;
+        int n = nums.size();
+
+        int cnt = 0;
+        for (int i = 0; i < n; i++)
+            mpp[nums[i]].push_back(i);
+
+        for (int i = 0; i < n; i++) {
+            int tar = 2 * nums[i];
+            vector<int>& temp = mpp[tar];
+            int x = temp.size();
+
+            int ub = upper_bound(temp.begin(), temp.end(), i) - temp.begin();
+
+            int right_elements = x - ub;
+            int left_elements = x - right_elements;
+            if (tar == nums[i])
+                left_elements--;
+
+            cnt = (cnt + ((1LL * right_elements * left_elements) % mod)) % mod;
+        }
+
+        return cnt;
+    }
+};
