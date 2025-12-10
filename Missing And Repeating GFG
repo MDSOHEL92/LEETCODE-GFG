@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    vector<int> findTwoElement(vector<int>& arr) {
+        // code here
+        int n = arr.size();
+        vector<int> ans(2);
+        
+        for(int i=0; i<n; i++){
+            int idx = abs(arr[i]) -1;
+            if (arr[idx] > 0)
+                arr[idx] = -arr[idx];
+            else
+                ans[0] = abs(arr[i]);
+        }
+        for(int i=0; i<n; i++){
+            if(arr[i] > 0)
+                ans[1] = i+1;
+        }
+        return ans;
+    }
+};
