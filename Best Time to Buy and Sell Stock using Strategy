@@ -1,0 +1,28 @@
+class Solution {
+public:
+    long long maxProfit(vector<int>& prices, vector<int>& strategy, int k) {
+          int n = prices.size();
+        long long baseProfit = 0;
+        
+        // Compute initial profit
+        for (int i = 0; i < n; i++) {
+            baseProfit += strategy[i] * prices[i];
+        }
+        
+        long long maxGain = 0, currGain = 0;
+        // Sliding window to find the best modification
+        for (int i = 0; i <= n - k; i++) {
+            long long windowGain = 0;
+            for (int j = i; j < i + k / 2; j++) {
+                windowGain += (0 - strategy[j]) * prices[j];
+            }
+            for (int j = i + k / 2; j < i + k; j++) {
+                windowGain += (1 - strategy[j]) * prices[j];
+            }
+            maxGain = max(maxGain, windowGain);
+        }
+        
+        return baseProfit + maxGain;
+
+    }
+};
