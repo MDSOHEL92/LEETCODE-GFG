@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int maxTwoEvents(vector<vector<int>>& events) {
+        sort(events.begin(), events.end(),
+             [](vector<int>& a, vector<int>& b) { return a[1] < b[1]; });
+        int n = events.size();
+        vector<int> max_val(n); // max value of one event up to i
+        max_val[0] = events[0][2];
+
+        // Precompute maximum single event value up to i
+        for (int i = 1; i < n; i++) {
+            max_val[i] = max(max_val[i - 1], events[i][2]);
+        }
+
+        int ans = max_val[n - 1]; // max with one event
+
+        // For each event, find best two-event combination
+        for (int i = 0; i < n; i++) {
+            // Binary search for the last event that ends before events[i]
+            // starts
+            int left = 0, right = i - 1, prev = -1;
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (events[mid][1] < events[i][0]) {
+                    prev = mid;
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            int two_events = events[i][2];
+            if (prev != -1) {
+                two_events += max_val[prev];
+            }
+            ans = max(ans, two_events);
+        }
+
+        return ans;
+    }
+};
