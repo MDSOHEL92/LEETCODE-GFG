@@ -1,0 +1,41 @@
+class Solution {
+  public:
+    virtual bool isOk(int mid, vector<int> &ranks, int &n){
+      int ts=0;
+      
+      // r*((k*(k+1))/2) <= mid
+      // k^2 + k - 2*mid/r <= 0 ; for k
+      for(int &r: ranks){
+        int k = (-1 + sqrt(1 + 8.0*mid/r))/2;
+        ts += k;
+        
+        if(ts >= n)
+          return true;
+      }
+      
+      return ts>=n;
+    }
+  
+    virtual int minTime(vector<int>& ranks, int n){
+      int mini=ranks[0];
+      for(int &x: ranks)
+        mini = min(mini, x);
+      
+      int low = 0;
+      int high = mini*((n*(n+1))/2);
+      
+      int ans;
+      while(low <= high){
+        int mid = low + (high-low)/2;
+        if(isOk(mid, ranks, n)){
+          ans = mid;
+          high = mid-1;
+        }
+        else
+          low = mid+1;
+      }
+      
+      return ans;
+    }
+};
+
