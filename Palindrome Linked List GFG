@@ -1,0 +1,48 @@
+/*
+class Node {
+  public:
+    int data;
+    Node *next;
+
+    Node(int x) {
+       data = x;
+       next = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    bool isPalindrome(Node *head) {
+        //  code here
+        if (!head || !head->next) return true;
+
+        // Step 1: Find the middle of the linked list
+        Node *slow = head, *fast = head;
+        while (fast->next && fast->next->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // Step 2: Reverse the second half
+        Node *prev = nullptr, *curr = slow->next, *next;
+        while (curr) {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        slow->next = prev;
+
+        // Step 3: Compare the two halves
+        Node *p1 = head, *p2 = slow->next;
+        while (p2) {
+            if (p1->data != p2->data) return false;
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+
+        // Optional: Restore the list by reversing the second half again
+        return true;
+    }
+};
