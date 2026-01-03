@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int numOfWays(int n) {
+       const int MOD = 1e9 + 7;
+        long long two_adjacent = 6, three_adjacent = 6;
+        
+        for (int i = 2; i <= n; ++i) {
+            long long new_two_adjacent = (two_adjacent * 3 + three_adjacent * 2) % MOD;
+            long long new_three_adjacent = (two_adjacent * 2 + three_adjacent * 2) % MOD;
+            two_adjacent = new_two_adjacent;
+            three_adjacent = new_three_adjacent;
+        }
+        
+        return (two_adjacent + three_adjacent) % MOD; 
+    }
+};
