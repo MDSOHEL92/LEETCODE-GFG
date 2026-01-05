@@ -1,0 +1,20 @@
+class Solution {
+public:
+    long long maxMatrixSum(vector<vector<int>>& matrix) {
+        long long sum = 0;
+        int minAbs = INT_MAX;
+        int negCount = 0;
+
+        for (auto& row : matrix) {
+            for (int val : row) {
+                sum += abs(val);
+                minAbs = min(minAbs, abs(val));
+                if(val < 0) negCount++;
+            }
+        }
+        if (negCount % 2 == 1) {
+            sum -= 2 * minAbs;
+        }
+        return sum;
+    }
+};
