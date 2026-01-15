@@ -1,0 +1,4 @@
+class Solution:
+    def maximizeSquareHoleArea(self, _: int, __: int, a: List[int], b: List[int]) -> int:
+        return (min(max(accumulate(map(sub,q:=sorted(w),q[1:]),
+            lambda p,v:(v==-1)*-~p,initial=0)) for w in (a,b))+2)**2
