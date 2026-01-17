@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    bool checkRedundancy(string &s) {
+        // code here
+        stack<char> st;
+        
+        for(char c : s){
+            if (c == '(' || c == '+' || c == '-' || c == '*' || c == '/'){
+                st.push(c);
+            }
+            else if (c == ')'){
+                bool hasOperator = false;
+                while(st.top() != '('){
+                    st.pop();
+                    hasOperator = true;
+                }
+                st.pop();
+                if(!hasOperator) return true;
+            }
+        }
+        return false;
+    }
+};
