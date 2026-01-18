@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int largestMagicSquare(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        // Precompute row and column prefix sums.
+        vector<vector<int>> rowSum(m, vector<int>(n + 1, 0)),
+            colSum(n, vector<int>(m + 1, 0));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                rowSum[i][j + 1] = rowSum[i][j] + grid[i][j];
+                colSum[j][i + 1] = colSum[j][i] + grid[i][j];
+            }
+        }
+
+        int maxK = 1;
+        for (int k = 2; k <= min(m, n); k++) {
+            for (int i = 0; i <= m - k; i++) {
+                for (int j = 0; j <= n - k; j++) {
+                    if (isMagic(grid, i, j, k, rowSum, colSum)) {
+                        maxK = max(maxK, k);
+                    }
+                }
+            }
+        }
+        return maxK;
+    }
+
+    bool isMagic(vector<vector<int>>& grid, int i, int j, int k,
+                 vector<vector<int>>& rowSum, vector<vector<int>>& colSum) {
+        int target = 0;
+        for (int x = 0; x < k; x++) {
+            target += grid[i + x][j + x];
+        }
+        // Check rows, columns, and diagonals for equal sum.
+        for (int x = 0; x < k; x++) {
+            if (rowSum[i + x][j + k] - rowSum[i + x][j] != target)
+                return false;
+            if (colSum[j + x][i + k] - colSum[j + x][i] != target)
+                return false;
+        }
+        int diag2 = 0;
+        for (int x = 0; x < k; x++) {
+            diag2 += grid[i + x][j + k - 1 - x];
+        }
+        return diag2 == target;
+    }
+};
