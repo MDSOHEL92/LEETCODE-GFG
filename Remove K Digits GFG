@@ -1,0 +1,24 @@
+class Solution {
+  public:
+    string removeKdig(string &s, int k) {
+        // code here
+        string result = "";
+        for(char c : s){
+            while(result.size() > 0 && result.back() > c && k > 0){
+                result.pop_back();
+                k--;
+            }
+            if(result.size() > 0 || c != '0'){
+                result.push_back(c);
+            }
+        }
+        while(result.size() > 0 && k > 0){
+            result.pop_back();
+            k--;
+        }
+        if(result == ""){
+            return "0";
+        }
+        return result;
+    }
+};
