@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    int findWays(int n) {
+        // code here
+        if(n % 2 != 0) return 0;
+        int k = n / 2;
+        return catalan(k);
+    }
+    int catalan(int k){
+        long long res = 1;
+        for(int i=0; i<k; i++){
+            res = res * (2*k-i);
+            res = res /(i + 1);
+        }
+        return res / (k + 1);
+    }
+};
