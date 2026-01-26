@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    vector<vector<int>> permuteDist(vector<int>& arr) {
+        // code here
+        vector<vector<int>> result;
+        permuteHelper(arr, 0, arr.size() - 1, result);
+        return result;
+    }
+    private:
+        void permuteHelper(vector<int>& arr, int left, int right, vector<vector<int>>& result){
+            if(left == right){
+                result.push_back(arr);
+            }else{
+                for(int i=left; i <= right; i++){
+                    swap(arr[left], arr[i]);
+                    permuteHelper(arr, left + 1, right, result);
+                    swap(arr[left], arr[i]);
+                }
+            }
+        }
+};
