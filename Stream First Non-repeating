@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    string firstNonRepeating(string &s) {
+        // code here
+        string ans = "";
+        unordered_map<char, int> count;
+        queue<char> q;
+        
+        for(int i=0; i<s.size(); i++){
+            char ch = s[i];
+            count[ch]++;
+            q.push(ch);
+            
+            while(!q.empty() && count[q.front()] > 1){
+                q.pop();
+            }
+            if(q.empty()){
+                ans += '#';
+            }else{
+                ans += q.front();
+            }
+        }
+        return ans;
+    }
+};
