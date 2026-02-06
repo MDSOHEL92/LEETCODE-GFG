@@ -1,0 +1,41 @@
+class Solution {
+  public:
+    vector<int> smallestDiff(vector<int>& a, vector<int>& b, vector<int>& c) {
+        // code here.
+        int n=a.size();
+        sort(a.begin(),a.end());
+        sort(b.begin(),b.end());
+        sort(c.begin(),c.end());
+        int i=0;
+        int j=0;
+        int k=0;
+        int index1=-1;
+        int index2=-1;
+        int index3=-1;
+        int ans=INT_MAX;
+        while(i<n && j<n && k<n){
+            int num1=min(a[i],min(b[j],c[k]));
+            int num2=max(a[i],max(b[j],c[k]));
+            if(num2-num1<ans){
+                index1=i;
+                index2=j;
+                index3=k;
+                ans=num2-num1;
+            }
+            
+            if(num1==a[i]) i++;
+            else if(num1==b[j]) j++;
+            else k++;
+        }
+        vector<int>result;
+        priority_queue<int>pq;
+        pq.push(a[index1]);
+        pq.push(b[index2]);
+        pq.push(c[index3]);
+        while(!pq.empty()){
+            result.push_back(pq.top());
+            pq.pop();
+        }
+        return result;
+    }
+};
