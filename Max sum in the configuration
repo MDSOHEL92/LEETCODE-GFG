@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    int maxSum(vector<int> &arr) {
+        // code here
+        int n = arr.size();
+        int totalSum = 0, currSum = 0, maxSum = 0;
+        
+        for(int i=0; i<n; i++){
+            totalSum += arr[i];
+            currSum += i*arr[i];
+        }
+        maxSum = currSum;
+        
+        for(int i=1; i<n; i++){
+            currSum = currSum + totalSum - n*arr[n-i];
+            maxSum = max(maxSum, currSum);
+        }
+        return maxSum;
+    }
+};
