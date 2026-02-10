@@ -1,0 +1,24 @@
+class Solution {
+  public:
+    int kokoEat(vector<int>& arr, int k) {
+        // Code here
+        int left = 1, right = *max_element(arr.begin(), arr.end());
+        while(left < right){
+            int mid = left + (right - left) / 2;
+            if(canEatAll(arr, mid, k)){
+                right = mid;
+            }else{
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+        
+        bool canEatAll(vector<int>& arr, int s, int k){
+            int hours = 0;
+            for(int pile : arr){
+                hours += (pile += s -1) / s;
+            }
+            return hours <= k;
+    }
+};
