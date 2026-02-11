@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    int minCost(vector<int>& heights, vector<int>& cost) {
+        // code here
+        int n = heights.size();
+        sort(heights.begin(), heights.end());
+        
+        int min_cost = INT_MAX;
+        for(int target : heights){
+            int total_cost = 0;
+            for(int i=0; i<n; i++){
+                total_cost += abs(heights[i] - target) * cost[i];
+            }
+            min_cost = min(min_cost, total_cost);
+        }
+        return min_cost;
+    }
+};
+##################################################################################################################
+                                     Python
+##################################################################################################################
+class Solution:
+    def minCost(self, heights, cost):
+        # code here
+        pairs = sorted(zip(heights, cost), key=lambda x: x[0])
+        total_heights = sum(cost)
+
+        acc, n = 0, len(pairs)
+        i = 0
+        while i < n:
+            acc += pairs[i][1]
+            if acc >= total_heights/2:
+                break
+            i += 1
+        return sum(abs(h - pairs[i][0])*c for h, c in pairs)
+        
