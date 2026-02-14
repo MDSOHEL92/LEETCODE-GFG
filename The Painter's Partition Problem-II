@@ -1,0 +1,35 @@
+class Solution {
+    public int minTime(int[] arr, int k) {
+        // code here
+        int low = Integer.MIN_VALUE, high = 0;
+        
+        for(int num : arr){
+            low = Math.max(low, num);
+            high += num;
+        }
+        while(low < high){
+            int mid = low + (high - low) / 2;
+            if(isValid(arr, k, mid)){
+                high = mid;
+            }else{
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+    private boolean isValid(int[] arr, int k, int maxLoad){
+        int painters = 1, currentLoad = 0;
+        for(int length :arr){
+            if(currentLoad + length > maxLoad){
+                painters++;
+                currentLoad  = length;
+                if(painters > k){
+                    return false;
+                }
+            }else{
+                currentLoad += length;
+            }
+        }
+        return true;
+    }
+}
