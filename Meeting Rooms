@@ -1,0 +1,26 @@
+class Solution {
+  public:
+    bool canAttend(vector<vector<int>> &arr) {
+        // Code Here
+        sort(arr.begin(), arr.end());
+        
+        for(int i=1; i<arr.size(); i++){
+            if(arr[i][0] < arr[i-1][1]){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+####################################################################
+###################################################################
+class Solution:
+    def canAttend(self, arr):
+        arr.sort(key=lambda x:(x[1],x[0],))
+        prv=-float('inf')
+        for sta,sto in arr:
+            if prv>sta:
+                return False
+            prv=sto
+        return True
+
