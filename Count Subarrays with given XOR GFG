@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    long subarrayXor(vector<int> &arr, int k) {
+        // code here
+        long long ans = 0;
+        int prefix_xor = 0;
+        unordered_map<int, int> freq;
+        freq[0] = 1;
+        
+        for(int num : arr){
+            prefix_xor ^= num;
+            int target = prefix_xor ^ k;
+            if(freq.find(target) != freq.end()){
+                ans += freq[target];
+            }
+            freq[prefix_xor]++;
+        }
+        return ans;
+    }
+};
