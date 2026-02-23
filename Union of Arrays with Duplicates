@@ -1,0 +1,11 @@
+vclass Solution {
+  public:
+    vector<int> findUnion(vector<int>& a, vector<int>& b) {
+        // code here
+        set<int> unionSet;
+        for(int num : a) unionSet.insert(num);
+        for(int num : b) unionSet.insert(num);
+        
+        return vector<int>(unionSet.begin(), unionSet.end());
+    }
+};
