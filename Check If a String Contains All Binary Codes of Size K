@@ -1,0 +1,33 @@
+class Solution {
+public:
+
+    bool hasAllCodes(string s, int k) 
+    {
+        vector<int> a(1<<k,0);
+        int cnt=0;
+        int n = s.size();
+        if(s.size() < k)
+            return false;
+        set<int> st;
+        int cur = 0;
+        for(int i = 0 ; i < k - 1 ; i++)
+        {
+            cur = 2*cur + (s[i] == '1');
+        }
+
+        int rem = 1<<(k);
+        for(int i = k-1 ; i < n ; i++)
+        {
+            cur = 2*cur + (s[i] == '1');
+            if(cur & rem)
+                cur -= rem;
+            if(!a[cur])
+            {
+                a[cur]=1;
+                cnt++;
+            }
+        }
+
+        return cnt == (1<<k);
+    }
+};
