@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    int totalElements(vector<int> &arr) {
+        // code here
+        int left = 0, right = 0;
+        int max_len = 0;
+        unordered_map<int, int> count;
+        
+        while(right < arr.size()){
+            count[arr[right]]++;
+            
+            while(count.size() > 2){
+                count[arr[left]]--;
+                if(count[arr[left]] == 0)
+                    count.erase(arr[left]);
+                    left++;
+            }
+            max_len = max(max_len, right - left + 1);
+            right++;
+        }
+        return max_len;
+    }
+};
