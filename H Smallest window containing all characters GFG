@@ -1,0 +1,45 @@
+class Solution {
+  public:
+    string minWindow(string &s, string &p) {
+        // code here
+        if(s.size() < p.size()) return "";
+        
+        vector<int> freqP(256, 0);
+        vector<int> freqS(256, 0);
+        
+        for(char c : p){
+            freqP[c]++;
+        }
+        int required = p.size();
+        int formed = 0;
+        
+        int l = 0, r = 0;
+        int minLen = INT_MAX;
+        int start = 0, end = 0;
+        
+        while(r < s.size()){
+            char c = s[r];
+            freqS[c]++;
+            
+            if(freqP[c] > 0 && freqS[c] <= freqP[c]){
+                formed++;
+            }
+            while(l <= r && formed == required){
+                c = s[l];
+                
+                if(r - l + 1 < minLen){
+                    minLen = r -l + 1;
+                    start = l;
+                    end = r;
+                }
+                freqS[c]--;
+                if(freqP[c] > 0 && freqS[c] < freqP[c]){
+                    formed--;
+                }
+                l++;
+            }
+            r++;
+        }
+        return minLen == INT_MAX ? "" : s.substr(start, minLen);
+    }
+};
