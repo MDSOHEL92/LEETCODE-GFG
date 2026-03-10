@@ -1,0 +1,26 @@
+#define MOD 1000000007
+class Solution {
+public:
+    int numberOfStableArrays(int zero, int one, int limit) {
+        int cols = one + 1;
+        vector<int> dp0((zero + 1) * cols, 0);
+        vector<int> dp1((zero + 1) * cols, 0);
+        for (int i = 1; i <= min(zero, limit); i++) dp0[i * cols + 0] = 1;
+        for (int j = 1; j <= min(one, limit); j++) dp1[0 * cols + j] = 1;
+        for (int i = 1; i <= zero; i++) {
+            for (int j = 1; j <= one; j++) {
+                int curr = i * cols + j;
+                int prev_i = (i - 1) * cols + j;
+                long long val0 = dp0[prev_i] + dp1[prev_i];
+                if (i > limit) val0 -= dp1[(i - limit - 1) * cols + j];
+                dp0[curr] = (val0 % MOD + MOD) % MOD;
+                int prev_j = i * cols + (j - 1);
+                long long val1 = dp0[prev_j] + dp1[prev_j];
+                if (j > limit) val1 -= dp0[i * cols + (j - limit - 1)];
+                dp1[curr] = (val1 % MOD + MOD) % MOD;
+            }
+        }
+        int fi = zero * cols + one;
+        return (dp0[fi] + dp1[fi]) % MOD;
+    }
+};
