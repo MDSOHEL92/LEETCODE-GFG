@@ -1,0 +1,21 @@
+class Solution {
+    public String getHappyString(int n, int k) {
+     List<String> happyStrings = new ArrayList<>();
+     generateHappyStrings("", n, happyStrings);
+     Collections.sort(happyStrings);
+     return k > happyStrings.size() ? "" : happyStrings.get(k - 1);   
+    }
+
+    private void generateHappyStrings(String current, int n, List<String> result) {
+        if (current.length() == n) {
+            result.add(current);
+            return;
+        }
+        char[] choices = { 'a', 'b', 'c' };
+        for (char c : choices) {
+            if (current.isEmpty() || current.charAt(current.length() - 1) != c) {
+                generateHappyStrings(current + c, n, result);
+            }
+        }
+    }
+}
