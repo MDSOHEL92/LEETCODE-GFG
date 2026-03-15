@@ -1,0 +1,32 @@
+class Fancy(object):
+
+    def __init__(self):
+        self.MOD = 10**9 + 7
+        self.arr = []
+        self.add = 0
+        self.mul = 1
+        
+
+    def append(self, val):
+        inv = pow(self.mul,self.MOD-2,self.MOD)
+        stored = (val - self.add) % self.MOD
+        stored = (stored * inv) % self.MOD
+        self.arr.append(stored)        
+
+    def addAll(self, inc):
+        self.add = (self.add + inc) % self.MOD
+        
+
+    def multAll(self, m):
+        self.mul = (self.mul * m) % self.MOD
+        self.add = (self.add * m) % self.MOD
+
+        
+    def getIndex(self, idx):
+        if idx >= len(self.arr):
+            return -1
+        return (self.arr[idx] * self.mul + self.add) % self.MOD
+        
+
+
+# Your Fancy object will be instantiated and called as such:
