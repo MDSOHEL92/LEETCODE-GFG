@@ -1,0 +1,77 @@
+/*
+class Node {
+  public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    void dfs(Node* node, long long currSum, int k,
+             unordered_map<long long,int>& mp, int &cnt){
+        
+        if(!node) return;
+        
+        currSum += node->data;
+        
+        if(currSum == k)
+            cnt++;
+        
+        if(mp.find(currSum - k) != mp.end())
+            cnt += mp[currSum - k];
+        
+        mp[currSum]++;
+        
+        dfs(node->left, currSum, k, mp, cnt);
+        dfs(node->right, currSum, k, mp, cnt);
+        
+        mp[currSum]--;
+    }
+
+    int countAllPaths(Node *root, int k) {
+        unordered_map<long long,int> mp;
+        int cnt = 0;
+        
+        dfs(root, 0, k, mp, cnt);
+        
+        return cnt;
+    }
+};
+######################################################################################################################################################
+##########################################################################################################################################################
+'''
+class Node:
+    def __init__(self, val):
+        self.data = val
+        self.right = None
+        self.left = None
+'''
+
+class Solution:
+    def countAllPaths(self, root, k):
+        # code h
+        self.count = 0
+        self.helper(root, k, [])
+        return self.count
+        
+    def helper(self, node, k, path):
+        if not node:
+            return
+        path.append(node.data)
+        self.check_path_sum(path, k)
+        self.helper(node.left, k, path)
+        self.helper(node.right, k, path)
+        path.pop()
+        
+    def check_path_sum(self, path, k):
+        curr_sum = 0
+        for i in range(len(path)-1, -1, -1):
+            curr_sum += path[i]
+            if curr_sum == k:
+                self.count += 1
