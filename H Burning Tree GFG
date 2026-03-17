@@ -1,0 +1,59 @@
+/*
+class Node {
+  public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+  void find(Node* root,unordered_map<int,vector<int>>&matrix){
+      if(root==NULL) return;
+      if(root->left!=NULL){
+          matrix[root->data].push_back(root->left->data);
+          matrix[root->left->data].push_back(root->data);
+      }
+      if(root->right!=NULL){
+          matrix[root->data].push_back(root->right->data);
+          matrix[root->right->data].push_back(root->data);
+      }
+      find(root->left,matrix);
+      find(root->right,matrix);
+  }
+  int solve(unordered_map<int,vector<int>>&matrix,int &target){
+      queue<int>q;
+      int count=0;
+      q.push(target);
+      unordered_set<int>visited;
+      while(!q.empty()){
+          count++;
+          int size=q.size();
+          while(size!=0){
+              int current=q.front();
+              q.pop();
+              size--;
+              visited.insert(current);
+              for(int num:matrix[current]){
+                  if(visited.find(num)==visited.end()){
+                      q.push(num);
+                  }
+              }
+          }
+      }
+      return count;
+  }
+    int minTime(Node* root, int target) {
+        // code here
+        unordered_map<int,vector<int>>matrix;
+        find(root,matrix);
+        return solve(matrix,target)-1;
+    }
+};
+
