@@ -1,0 +1,24 @@
+class Solution {
+public:
+    auto countSubmatrices(std::vector<std::vector<int>>& g, int k) noexcept {
+        namespace stdr = std::ranges;
+        namespace stdv = std::views;
+
+        // first row prefix sum
+        for (auto [prev, curr] : g[0] | stdv::adjacent<2>) {
+            curr += prev;
+        }
+
+        // 2d prefix sum
+        for (auto [prev, curr] : g | stdv::adjacent<2>) {
+            curr[0] += prev[0]; // zero index special case
+            for (size_t x = 1; x != curr.size(); ++x) {
+                curr[x] += curr[x - 1] + prev[x] - prev[x - 1];
+            }
+        }
+
+        return stdr::count_if(
+            g | std::views::join,
+            std::bind(stdr::less_equal{}, std::placeholders::_1, k));
+    }
+};
