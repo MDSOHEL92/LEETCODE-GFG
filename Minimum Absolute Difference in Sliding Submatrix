@@ -1,0 +1,91 @@
+class Solution {
+public:
+    set<int> vals;
+    multiset<int> diffs;
+    unordered_map<int,int> freq;
+
+    void add(int x) {
+        freq[x]++;
+        if (freq[x] > 1) return;
+
+        auto it = vals.insert(x).first;
+
+        auto nxt = next(it);
+        auto prv = (it == vals.begin()) ? vals.end() : prev(it);
+
+        if (nxt != vals.end() && prv != vals.end()) {
+            diffs.erase(diffs.find(*nxt - *prv));
+        }
+
+        if (prv != vals.end()) {
+            diffs.insert(*it - *prv);
+        }
+
+        if (nxt != vals.end()) {
+            diffs.insert(*nxt - *it);
+        }
+    }
+
+    void remove(int x) {
+        freq[x]--;
+        if (freq[x] > 0) return;
+
+        auto it = vals.find(x);
+
+        auto nxt = next(it);
+        auto prv = (it == vals.begin()) ? vals.end() : prev(it);
+
+        if (prv != vals.end()) {
+            diffs.erase(diffs.find(*it - *prv));
+        }
+
+        if (nxt != vals.end()) {
+            diffs.erase(diffs.find(*nxt - *it));
+        }
+
+        if (nxt != vals.end() && prv != vals.end()) {
+            diffs.insert(*nxt - *prv);
+        }
+
+        vals.erase(it);
+    }
+
+    int getMin() {
+        return vals.size() <= 1 ? 0 : *diffs.begin();
+    }
+
+    vector<vector<int>> minAbsDiff(vector<vector<int>>& grid, int k) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        vector<vector<int>> res(m - k + 1, vector<int>(n - k + 1));
+
+        for (int row = 0; row <= m - k; row++) {
+
+            vals.clear();
+            diffs.clear();
+            freq.clear();
+
+            // build first window
+            for (int i = row; i < row + k; i++) {
+                for (int j = 0; j < k; j++) {
+                    add(grid[i][j]);
+                }
+            }
+
+            for (int col = 0; col <= n - k; col++) {
+
+                res[row][col] = getMin();
+
+                if (col < n - k) {
+                    for (int i = row; i < row + k; i++) {
+                        remove(grid[i][col]);
+                        add(grid[i][col + k]);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+};
