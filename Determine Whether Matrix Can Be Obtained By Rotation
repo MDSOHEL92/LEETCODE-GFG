@@ -1,0 +1,26 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& m) {
+        int n = m.size(), ci = 0, t = n - 1, gi = n - 1;
+        while (ci != n / 2) {
+            for (int i = 0; i != t; ++i) {
+                int& a = m[ci][ci + i];
+                int& b = m[ci + i][gi];
+                int& c = m[gi][gi - i];
+                int& d = m[gi - i][ci];
+
+                swap(a, b);
+                swap(d, c);
+                swap(a, c);
+            }
+            ++ci, --gi, t -= 2;
+        }
+    }
+    bool findRotation(vector<vector<int>>& m, vector<vector<int>>& t) {
+        for (int i = 0; i != 3; ++i) {
+            if (m == t) return true;
+            rotate(m);
+        }
+        return m == t;
+    }
+};
