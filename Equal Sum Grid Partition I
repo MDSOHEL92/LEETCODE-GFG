@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool canPartitionGrid(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        long long tot=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                tot+=grid[i][j];
+            }
+        }
+        long long tot1=0,tot2=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                tot1+=grid[i][j];
+            }
+            if(tot==2*tot1){
+                return true;
+            }
+        }
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                tot2+=grid[j][i];
+            }
+            if(tot==2*tot2){
+                return true;
+            }
+        }
+        return false;
+    }
+};
