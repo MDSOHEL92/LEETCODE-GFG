@@ -1,0 +1,39 @@
+class Solution:
+    def minCost(self, houses):
+        n = len(houses)
+        
+        edges = []
+        for i in range(n):
+            x1, y1 = houses[i]
+            for j in range(i + 1, n):
+                x2,y2 = houses[j]
+                cost = abs(x1 - x2) + abs(y1 - y2)
+                edges.append((cost, i, j))
+                
+        edges.sort()
+        
+        parent = list(range(n))
+        
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+                
+            return parent[x]
+            
+        def union(x, y):
+            px, py = find(x), find(y)
+            if px != py:
+                parent[py] = px
+                return True
+            return False
+            
+        total_cost = 0
+        edges_used = 0
+        
+        for cost, u, v in edges:
+            if union(u, v):
+                total_cost += cost
+                edges_used += 1
+                if edges_used == n - 1:
+                    break
+        return total_cost
