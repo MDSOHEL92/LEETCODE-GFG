@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    int maxProfit(vector<int>& arr, int k) {
+        // Code here
+        int n = arr.size();
+        if(n <= 1) return 0;
+        
+        int buy = -arr[0], sell = 0;
+        for(int i=1; i<n; ++i){
+            int new_buy = max(buy, sell - arr[i]);
+            int new_sell = max(sell, buy + arr[i] - k);
+            buy = new_buy;
+            sell = new_sell;
+        }
+        return sell;
+    }
+};
