@@ -1,0 +1,13 @@
+class Solution {
+  public:
+    vector<string> graycode(int n) {
+        // code here
+        vector<string> result;
+        int num = 1 << n;
+        for(int i=0; i<num; i++){
+            int gray = i ^ (i >> 1);
+            result.push_back(bitset<32>(gray).to_string().substr(32 - n));
+        }
+        return result;
+    }
+};
