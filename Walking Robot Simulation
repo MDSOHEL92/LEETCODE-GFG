@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        // store obstacles in a set
+        unordered_set<string> obs;
+        for (auto &o: obstacles) {
+            string str = to_string(o[0]) + "#" + to_string(o[1]);
+            obs.insert(str);
+        }
+
+        // directions : North, East, South, West
+        int dx[4] = {0, 1, 0, -1};
+        int dy[4] = {1, 0, -1, 0};
+
+        int x = 0, y = 0;
+        int dir = 0;        // NORTH
+        int maxDist = 0;
+
+        for (int cmd: commands) {
+            if (cmd == -1) {
+                // turn right
+                dir = (dir + 1) % 4;
+            }
+            else if (cmd == -2) {
+                // turn left
+                dir = (dir + 3) % 4;
+            }
+            else {
+                // move forward step by step
+                for (int step = 0; step < cmd; step++) {
+                    int nx = x + dx[dir];
+                    int ny = y + dy[dir];
+
+                    string key = to_string(nx) + "#" + to_string(ny);
+
+                    if (obs.count(key))
+                        break;
+
+                    x = nx;
+                    y = ny;
+
+                    maxDist = max(maxDist, x*x + y*y);
+                }
+            }
+        }
+        return maxDist;
+    }
+};
