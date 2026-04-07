@@ -1,0 +1,42 @@
+class Solution:
+    def stableMarriage(self, men, women):
+        n = len(men)
+        # Initialize all men and women to be free
+        free_men = list(range(n))
+        # Store the current engagement of women
+        woman_engaged = [-1] * n
+        # Store the next proposal index for each man
+        next_proposal = [0] * n
+        
+        # While there are free men
+        while free_men:
+            man = free_men[0]
+            # Get the man's preference list
+            man_pref = men[man]
+            # Get the next woman in the preference list
+            woman = man_pref[next_proposal[man]]
+            # Get the woman's preference list
+            woman_pref = women[woman]
+            
+            # Check if the woman is free
+            if woman_engaged[woman] == -1:
+                # Engage the man and woman
+                woman_engaged[woman] = man
+                free_men.pop(0)
+            else:
+                # Check if the woman prefers the current man over her current partner
+                current_partner = woman_engaged[woman]
+                if woman_pref.index(man) < woman_pref.index(current_partner):
+                    # Engage the new man and free the previous partner
+                    woman_engaged[woman] = man
+                    free_men.pop(0)
+                    free_men.append(current_partner)
+                else:
+                    # Man remains free, move to the next preference
+                    next_proposal[man] += 1
+        
+        # Construct the result array
+        result = [-1] * n
+        for w in range(n):
+            result[woman_engaged[w]] = w
+        return result
