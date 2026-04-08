@@ -1,0 +1,31 @@
+# class Solution:
+#     def xorAfterQueries(self, nums: List[int], queries: List[List[int]]) -> int:
+#         for l, r, k, val in queries:
+#             for idx in range(l, r + 1):
+#                 nums[idx] = (nums[idx] * val) % (10 ** 9 + 7)
+#         result = 0
+#         for num in nums:
+#             result ^= num
+#         return result
+class Solution(object):
+    def xorAfterQueries(self, nums, queries):
+        """
+        :type nums: List[int]
+        :type queries: List[List[int]]
+        :rtype: int
+        """
+        
+        for q in queries:
+            idx=q[0]
+            ri=q[1]
+            ki=q[2]
+            vi=q[3]
+            while idx<=ri:
+                nums[idx]=(nums[idx]*vi)%(10**9+7)
+                idx+=ki
+        r = 0
+        for num in nums:
+            r ^=num
+        return r
+
+        
