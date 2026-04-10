@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minimumDistance(vector<int>& nums) {
+        unordered_map<int, vector<int>> indexMap;
+        int minDistance = INT_MAX;
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            indexMap[nums[i]].push_back(i);
+            if (indexMap[nums[i]].size() == 3) {
+                int i1 = indexMap[nums[i]][0], i2 = indexMap[nums[i]][1], i3 = indexMap[nums[i]][2];
+                int distance = abs(i1 - i2) + abs(i2 - i3) + abs(i3 - i1);
+                minDistance = min(minDistance, distance);
+                indexMap[nums[i]].erase(indexMap[nums[i]].begin()); // slide window
+            }
+        }
+        
+        return minDistance == INT_MAX ? -1 : minDistance;
+    }
+};
