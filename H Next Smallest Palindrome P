@@ -1,0 +1,22 @@
+class Solution:
+    def nextPalindrome(self, num):
+        def add1(arr):
+            car=1
+            for ix in range(len(arr)-1,-1,-1):
+                arr[ix]+=car
+                car=arr[ix]//10
+                arr[ix]%=10
+            if car==1:
+                arr=[1]+arr
+            return arr
+        lth=len(num)
+        left=num[:lth//2]
+        mid=[num[lth//2]] if lth%2==1 else []
+        right=num[lth//2+1:] if lth%2==1 else num[lth//2:]
+        if left[::-1]>right:
+            return left+mid+left[::-1]
+        left=add1(left+mid)
+        if mid or len(left)!=lth//2:
+            return left[:-1]+[left[-1]]+left[:-1][::-1]
+        return left+left[::-1]
+
