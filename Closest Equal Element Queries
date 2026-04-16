@@ -1,0 +1,53 @@
+class Solution {
+public:
+    vector<int> solveQueries(vector<int>& nums, vector<int>& queries) {
+        int n = nums.size();
+
+        for (int i = 0; i < n; i++) {
+            nums.push_back(nums[i]);
+        }
+
+        vector<int> prev(nums.size());
+        vector<int> next(nums.size());
+
+        unordered_map<int, int> prevmp;
+        unordered_map<int, int> nextmp;
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (prevmp.find(nums[i]) == prevmp.end()) {
+                prev[i] = -1;
+                prevmp[nums[i]] = i;
+            } else {
+                prev[i] = prevmp[nums[i]];
+                prevmp[nums[i]] = i;
+            }
+        }
+
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            if (nextmp.find(nums[i]) == nextmp.end()) {
+                next[i] = -1;
+                nextmp[nums[i]] = i;
+            } else {
+                next[i] = nextmp[nums[i]];
+                nextmp[nums[i]] = i;
+            }
+        }
+
+        vector<int> res(queries.size());
+
+        for (int i = 0; i < queries.size(); i++) {
+            int qIndex = n + queries[i];
+
+            int previdx = (prev[qIndex] == -1) ? n : qIndex - prev[qIndex];
+            int nextidx = (next[queries[i]] == -1) ? n : next[queries[i]] - queries[i];
+
+            if (previdx == n && nextidx == n) {
+                res[i] = -1;
+            } else {
+                res[i] = min(previdx, nextidx);
+            }
+        }
+
+        return res;
+    }
+};
