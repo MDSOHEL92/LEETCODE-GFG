@@ -1,0 +1,17 @@
+class Solution:
+    def twoEditWords(self, queries: List[str], dictionary: List[str]) -> List[str]:
+        def is_within_two(word, dict_word):
+            diff = 0
+            for i in range(len(word)):
+                if word[i]!= dict_word[i]:
+                    diff += 1
+                    if diff > 2:
+                        return False
+            return True
+        ans = []
+        for q in queries:
+            for d in dictionary:
+                if is_within_two(q, d):
+                    ans.append(q)
+                    break
+        return ans
