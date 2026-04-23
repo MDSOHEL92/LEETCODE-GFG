@@ -1,0 +1,22 @@
+class Solution:
+    def distance(self, nums: List[int]) -> List[int]:
+        groups = {}
+
+        for i, x in enumerate(nums):
+            if x not in groups:
+                groups[x] = []
+            groups[x].append(i)
+
+        ans = [0] * len(nums)
+
+        for x, idxs in groups.items():
+            tsum = sum(idxs)
+            pre = 0
+            m = len(idxs)
+
+            for k, i in enumerate(idxs):
+                diff = k - (m - k - 1)
+                ans[i] = (diff - 1) * i - (2 * pre - tsum)
+                pre += i
+
+        return ans
