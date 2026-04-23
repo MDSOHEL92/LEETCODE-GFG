@@ -1,0 +1,17 @@
+class Solution:
+    def canSplit(self, arr):
+        #code here
+        total = sum(arr)
+        
+        if total % 2!= 0:
+            return False
+            
+        target = total // 2
+        curr_sum = 0
+        
+        for i in range(len(arr) - 1):
+            curr_sum += arr[i]
+            if curr_sum == target:
+                return True
+                
+        return False
