@@ -1,0 +1,36 @@
+class Solution:
+    def containsCycle(self, grid: List[List[str]]) -> bool:
+        rowCount, colCount = len(grid), len(grid[0])
+        visited = [False] * (rowCount * colCount)
+        directions = (
+            (0, -1),   # left
+            (0, 1),    # right
+            (-1, 0),   # up
+            (1, 0)     # down
+        )
+        def dfs(currentRow, currentCol, parentRow, parentCol):
+            visited[currentRow * colCount + currentCol] = True
+            for rowMove, colMove in directions:
+                nextRow = currentRow + rowMove
+                nextCol = currentCol + colMove
+
+                if (nextRow, nextCol) != (parentRow, parentCol):
+
+                    if 0 <= nextRow < rowCount and 0 <= nextCol < colCount:
+
+                        if grid[nextRow][nextCol] == grid[currentRow][currentCol]:
+
+                            if visited[nextRow * colCount + nextCol]:
+                                return True
+
+                            if dfs(nextRow, nextCol, currentRow, currentCol):
+                                return True
+            return False
+        for row in range(rowCount):
+            for col in range(colCount):
+
+                if not visited[row * colCount + col]:
+
+                    if dfs(row, col, -1, -1):
+                        return True
+        return False
