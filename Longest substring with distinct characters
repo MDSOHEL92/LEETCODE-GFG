@@ -1,0 +1,14 @@
+class Solution:
+    def longestUniqueSubstr(self, s):
+        # code here
+        last_idx = {}
+        left = max_len = 0
+        
+        for right, ch in enumerate(s):
+            if ch in last_idx and last_idx[ch] >= left:
+                left = last_idx[ch] + 1
+                
+            last_idx[ch] = right
+            max_len = max(max_len, right - left + 1)
+            
+        return max_len
