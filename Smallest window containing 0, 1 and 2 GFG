@@ -1,0 +1,14 @@
+class Solution:
+    def smallestSubstring(self, s):
+        # code here
+        last = {'0': -1, '1': -1, '2': -1}
+        ans = float('inf')
+        
+        for i, ch in enumerate(s):
+            last[ch] = i
+            
+            if -1 not in last.values():
+                start = min(last.values())
+                ans = min(ans, i - start + 1)
+                
+        return -1 if ans == float('inf') else ans
