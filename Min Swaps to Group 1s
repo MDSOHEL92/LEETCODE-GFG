@@ -1,0 +1,21 @@
+class Solution:
+    def minSwaps(self, arr):
+        # code here
+        n = len(arr)
+        total_ones = sum(arr)
+        
+        if total_ones == 0:
+            return -1
+        if total_ones == n:
+            return 0
+            
+        k = total_ones
+        curr_zeros = arr[:k].count(0)
+        min_swaps = curr_zeros
+        
+        for i in range(k, n):
+            if arr[i - k] == 0: curr_zeros -= 1
+            if arr[i] == 0: curr_zeros += 1
+            min_swaps = min(min_swaps, curr_zeros)
+            
+        return min_swaps
