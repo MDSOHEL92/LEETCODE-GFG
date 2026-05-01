@@ -1,0 +1,20 @@
+import heapq
+
+class Solution:
+    def kthLargest(self, arr, k):
+        # code here 
+        min_heap = []
+        ans = []
+        
+        for num in arr:
+            heapq.heappush(min_heap, num)
+            
+            if len(min_heap) > k:
+                heapq.heappop(min_heap)
+                
+            if len(min_heap) < k:
+                ans.append(-1)
+                
+            else:
+                ans.append(min_heap[0])
+        return ans
