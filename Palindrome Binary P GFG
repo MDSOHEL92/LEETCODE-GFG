@@ -1,0 +1,12 @@
+class Solution:
+    def isBinaryPalindrome(self, n):
+        # code here
+        # rev, temp = 0, n
+        # while temp:
+        #     rev (rev << 1) | (temp & 1)
+        #     temp >>= 1
+        # return rev == n
+
+
+        binary = bin(n)[2:]
+        return binary == binary[::-1]
