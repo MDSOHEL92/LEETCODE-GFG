@@ -1,0 +1,16 @@
+class Solution:
+    def sumXOR(self, arr):
+        # code here
+        ans = 0
+        n = len(arr)
+        
+        for bit in range(32):
+            ones = 0
+            for num in arr:
+                if num & (1 << bit):
+                    ones += 1
+                    
+            zeros = n - ones
+            ans += ones * zeros * (1 << bit)
+            
+        return ans
