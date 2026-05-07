@@ -1,0 +1,24 @@
+# Definition for Node
+class Solution:
+    def isSame(self, a, b):
+        if not a and not b:
+            return True
+        if not a or not b:
+            return False
+        return (a.data == b.data and
+                self.isSame(a.left, b.left)and
+                self.isSame(a.right, b.right))
+        
+
+
+    def isSubTree(self, root1, root2):
+        # code here
+        if not root2:
+            return True
+        if not root1:
+            return False
+        if self.isSame(root1, root2):
+            return True
+            
+        return (self.isSubTree(root1.left, root2)or
+                self.isSubTree(root1.right, root2))
