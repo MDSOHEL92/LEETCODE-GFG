@@ -1,0 +1,67 @@
+class Solution:
+    def minJumps(self, nums):
+        from collections import deque, defaultdict
+        
+        n = len(nums)
+        max_val = max(nums)
+        
+        # -------- Build SPF sieve --------
+        spf = list(range(max_val + 1))
+        i = 2
+        while i * i <= max_val:
+            if spf[i] == i:
+                for j in range(i * i, max_val + 1, i):
+                    if spf[j] == j:
+                        spf[j] = i
+            i += 1
+        
+        # -------- Determine if number is prime --------
+        def get_prime(x):
+            if x > 1 and spf[x] == x:
+                return x
+            return None
+        
+        prime_at = [get_prime(x) for x in nums]
+        
+        # Build divisor buckets for teleportation destinations
+        divisor_bucket = defaultdict(list)
+        for i, x in enumerate(nums):
+            tmp = x
+            used = set()
+            while tmp > 1:
+                p = spf[tmp]
+                if p not in used:
+                    divisor_bucket[p].append(i)
+                    used.add(p)
+                while tmp % p == 0:
+                    tmp //= p
+        
+        # BFS
+        dist = [-1] * n
+        dist[0] = 0
+        q = deque([0])
+        
+        used_prime = set()
+        
+        while q:
+            i = q.popleft()
+            d = dist[i]
+            if i == n - 1:
+                return d
+            
+            # Adjacent moves
+            for nxt in (i - 1, i + 1):
+                if 0 <= nxt < n and dist[nxt] == -1:
+                    dist[nxt] = d + 1
+                    q.append(nxt)
+            
+            # Teleportation only for primes
+            p = prime_at[i]
+            if p is not None and p not in used_prime:
+                used_prime.add(p)
+                for j in divisor_bucket[p]:
+                    if dist[j] == -1:
+                        dist[j] = d + 1
+                        q.append(j)
+        
+        return -1
