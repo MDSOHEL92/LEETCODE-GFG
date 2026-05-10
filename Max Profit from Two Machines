@@ -1,0 +1,20 @@
+class Solution:
+    def maxProfit(self, x, y, a, b):
+        # code here
+
+        # Pair each task with its profits
+        tasks = list(zip(a, b))
+        
+        # Sort by absolute profit difference (descending)
+        tasks.sort(key=lambda t: abs(t[0] - t[1]), reverse=True)
+        
+        profit = 0
+        for ai, bi in tasks:
+            # Assign greedily while respecting limits
+            if (ai >= bi and x > 0) or y == 0:
+                profit += ai
+                x -= 1
+            else:
+                profit += bi
+                y -= 1
+        return profit
