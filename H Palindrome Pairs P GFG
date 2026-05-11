@@ -1,0 +1,28 @@
+class Solution:
+    def palindromePair(self, arr):
+        # Code here
+        def isPalindrome(s, l, r):
+            while l < r:
+                if s[l]!= s[r]:
+                    return False
+                l += 1
+                r -= 1
+            return True
+        mp = {s : i for i, s in enumerate(arr)}
+        
+        for i, s in enumerate(arr):
+            n = len(s)
+            for j in range(n + 1):
+                prefix, suffix = s[:j], s[j:]
+                
+                if isPalindrome(prefix, 0, len(prefix) -1):
+                    rev = suffix[::-1]
+                    if rev in mp and mp[rev]!= i:
+                        return True
+                if j!= n and isPalindrome(suffix, 0, len(suffix) -1):
+                    rev = prefix[::-1]
+                    if rev in mp and mp[rev]!= i:
+                        return True
+        return False
+                
+                
