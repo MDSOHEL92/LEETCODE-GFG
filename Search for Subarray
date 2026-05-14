@@ -1,0 +1,28 @@
+class Solution:
+    def search(self, a, b):
+        # code here
+        if not b:
+            return []
+        if len(b) > len(a):
+            return []
+            
+        m = len(b)
+        lps = [0] * m
+        j = 0
+        for i in range(1, m):
+            while j > 0 and b[i]!= b[j]:
+                j = lps[j - 1]
+            if b[i] == b[j]:
+                j += 1
+            lps[i] = j
+        res = []
+        j = 0
+        for i in range(len(a)):
+            while j > 0 and a[i]!= b[j]:
+                j = lps[j - 1]
+            if a[i] == b[j]:
+                j += 1
+            if j == m:
+                res.append(i - m + 1)
+                j = lps[j - 1]
+        return res
