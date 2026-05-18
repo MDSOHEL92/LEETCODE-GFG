@@ -1,0 +1,12 @@
+class Solution:
+    def __init__(self):
+        self.dp = {}
+        
+    def maxSum(self, n):
+        # code here
+        if n == 0: return 0
+        if n in self.dp: return self.dp[n]
+
+        break_sum = self.maxSum(n//2) + self.maxSum(n//3) + self.maxSum(n//4)
+        self.dp[n] = max(n, break_sum)
+        return self.dp[n]
