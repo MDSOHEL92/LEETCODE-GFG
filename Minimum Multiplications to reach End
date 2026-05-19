@@ -1,0 +1,25 @@
+from collections import deque
+class Solution:
+    def minSteps(self, arr, start, end):
+        # code here
+        from collections import deque
+        if start == end:
+            return 0
+        MODULO = 1000
+        visited = [False] * MODULO
+        visited[start] = True
+        q = deque([start])
+        steps = 1
+        while q:
+            for _ in range(len(q)):
+                i = q.popleft()
+                for a in arr:
+                    j = (i * a) % MODULO
+                    if visited[j]:
+                        continue
+                    visited[j] = True
+                    if j == end:
+                        return steps
+                    q.append(j)
+            steps += 1
+        return -1
