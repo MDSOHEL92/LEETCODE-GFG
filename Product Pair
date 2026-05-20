@@ -1,0 +1,11 @@
+class Solution:
+    def isProduct(self, arr, target):
+        # code here
+        seen = set()
+        for x in arr:
+            if x and target % x == 0 and target // x in seen:
+                return True
+            if x == target == 0 and 0 in seen:
+                return True
+            seen.add(x)
+        return False
