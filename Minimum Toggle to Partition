@@ -1,0 +1,21 @@
+class Solution:
+    def minToggle(self, arr):
+        # code here
+        n = len(arr)
+        total_ones = sum(arr)
+        total_zeros = n - total_ones
+        
+        ones_left = 0
+        min_toggles = min(total_ones, total_zeros)
+        
+        for i in range(n):
+            if arr[i] == 1:
+                ones_left += 1
+                
+            zeros_right = total_zeros - (i + 1 - ones_left)
+            ones_on_left = ones_left
+            
+            toggles = ones_on_left + zeros_right
+            min_toggles = min(min_toggles, toggles)
+            
+        return min_toggles
