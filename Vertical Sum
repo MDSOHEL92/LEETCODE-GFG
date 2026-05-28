@@ -1,0 +1,28 @@
+# Structure of binary tree node
+'''
+class Node:
+    def __init__(self, item):
+        self.data = item
+        self.left = None
+        self.right = None
+'''
+
+class Solution:
+    def verticalSum(self, root):
+        # code here
+        if not root:
+            return []
+            
+        hd_map = {}
+        
+        def dfs(node, hd):
+            if not node:
+                return 
+            hd_map[hd] = hd_map.get(hd, 0) + node.data
+            dfs(node.left, hd - 1)
+            dfs(node.right, hd + 1)
+            
+        dfs(root, 0)
+        
+        min_hd, max_hd = min(hd_map.keys()), max(hd_map.keys())
+        return [hd_map[i] for i in range(min_hd, max_hd + 1)]
