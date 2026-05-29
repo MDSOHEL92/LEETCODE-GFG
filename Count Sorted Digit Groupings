@@ -1,0 +1,20 @@
+class Solution:
+    def validGroups(self, s):
+        # code here
+        n = len(s)
+        digits = [int(c) for c in s]
+        
+        from functools import lru_cache
+        
+        @lru_cache(None)
+        def dfs(i, prev_sum):
+            if i == n:
+                return 1
+            res = 0
+            curr_sum = 0
+            for j in range(i, n):
+                curr_sum += digits[j]
+                if curr_sum >= prev_sum:
+                    res += dfs(j + 1, curr_sum)
+            return res
+        return dfs(0, 0)
