@@ -1,0 +1,21 @@
+class Solution:
+    def replaceElements(self, arr):
+        n = len(arr)
+        if n == 1:
+            return arr
+            
+        # Store original array to avoid overwriting
+        orig = arr[:]
+        
+        # First element
+        arr[0] = orig[0] ^ orig[1]
+        
+        # Middle elements
+        for i in range(1, n - 1):
+            arr[i] = orig[i - 1] ^ orig[i + 1]
+            
+        # Last element
+        if n > 1:
+            arr[n - 1] = orig[n - 2] ^ orig[n - 1]
+            
+        return arr
