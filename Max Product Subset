@@ -1,0 +1,52 @@
+class Solution:
+    def findMaxProduct(self, arr):
+        # code here
+        arr.sort()
+        le = 1
+        maxi = 1
+        is_first = True
+        for i in arr:
+            t = le * i
+            le = maxi * i 
+            maxi = max(i, i if is_first else maxi, le, t)
+            is_first = False
+
+        return maxi % (10**9 + 7) if maxi > 0 else maxi
+############################################################################################################
+def findMaxProduct(self, arr):
+        n = len(arr)
+        MOD = 10**9 + 7
+        
+        if n == 1:
+            return arr[0] % MOD
+            
+        zero_cnt = 0
+        neg_cnt = 0
+        max_neg = float('-inf')
+        prod = 1
+        has_pos = False
+        
+        for x in arr:
+            if x == 0:
+                zero_cnt += 1
+                continue
+            if x < 0:
+                neg_cnt += 1
+                max_neg = max(max_neg, x)
+            else:
+                has_pos = True
+            prod = (prod * x) % MOD
+        
+        # Case 1: All zeros
+        if zero_cnt == n:
+            return 0
+            
+        # Case 2: Only one negative + zeros
+        if neg_cnt == 1 and zero_cnt > 0 and not has_pos:
+            return 0
+            
+        # Case 3: Odd negatives → remove largest negative
+        if neg_cnt % 2 == 1:
+            prod = prod * pow(max_neg, -1, MOD) % MOD
+            
+        return prod % MOD
