@@ -1,0 +1,24 @@
+from collections import defaultdict
+from bisect import bisect_left, bisect_right
+
+class Solution:
+    def freqInRange(self, arr, queries):
+        # Step 1: Map each value to its indices
+        pos = defaultdict(list)
+        for i, val in enumerate(arr):
+            pos[val].append(i)
+        
+        ans = []
+        # Step 2: Answer each query using binary search
+        for L, r, x in queries:
+            if x not in pos:
+                ans.append(0)
+                continue
+            
+            lst = pos[x]
+            # count of indices in [L, r] = right_bound - left_bound
+            left = bisect_left(lst, L)
+            right = bisect_right(lst, r)
+            ans.append(right - left)
+            
+        return ans
