@@ -1,0 +1,20 @@
+class Solution:
+    def earliestFinishTime(self, landStartTime: List[int], landDuration: List[int], 
+                           waterStartTime: List[int], waterDuration: List[int]) -> int:
+        
+        def min_finish_time(start1, dur1, start2, dur2):
+            # Do type1 first, then type2. Return earliest finish.
+            # Best first ride = min finish time
+            earliest_first_end = min(s + d for s, d in zip(start1, dur1))
+            
+            # For each second ride, start at max(earliest_first_end, open_time)
+            res = float('inf')
+            for s, d in zip(start2, dur2):
+                start_second = max(earliest_first_end, s)
+                res = min(res, start_second + d)
+            return res
+        
+        land_first = min_finish_time(landStartTime, landDuration, waterStartTime, waterDuration)
+        water_first = min_finish_time(waterStartTime, waterDuration, landStartTime, landDuration)
+        
+        return min(land_first, water_first)
