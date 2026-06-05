@@ -1,0 +1,31 @@
+class Solution:
+    def lexicographicallySmallest(self, s, k):
+        n = len(s)
+        
+        # Step 1: Correct k based on length
+        if n & (n - 1) == 0: # check power of 2
+            k = k // 2
+        else:
+            k = k * 2
+            
+        # Step 2: Check if removal possible
+        if k >= n:
+            return "-1"
+            
+        # Step 3: Monotonic stack to build answer
+        stack = []
+        to_remove = k
+        
+        for ch in s:
+            while stack and to_remove > 0 and stack[-1] > ch:
+                stack.pop()
+                to_remove -= 1
+            stack.append(ch)
+        
+        # If we still need to remove, remove from end
+        while to_remove > 0:
+            stack.pop()
+            to_remove -= 1
+            
+        res = ''.join(stack)
+        return res if res else "-1"
