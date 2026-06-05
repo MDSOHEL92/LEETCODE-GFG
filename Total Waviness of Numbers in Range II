@@ -1,0 +1,66 @@
+class Solution:
+    def totalWaviness(self, num1: int, num2: int) -> int:
+
+        s = str(num1 - 1)
+
+        @cache
+        def dp(i, start, limit, prv, pr, sm):
+
+            if i >= len(s):
+                return sm
+
+            ans = 0
+            if start:
+                if limit:
+                    
+                    for j in range(int(s[i]) + 1):
+                        if j == int(s[i]):
+                            if pr != None and prv != None and (prv > pr < j or prv < pr > j):
+                                ans +=dp(i + 1, True, True, pr, j, sm + 1)
+                            else:
+                                ans +=dp(i + 1, True, True, pr, j, sm)
+                        else:
+                            if pr != None and prv != None and (prv > pr < j or prv < pr > j):
+                                ans +=dp(i + 1, True, False, pr, j, sm + 1)
+                            else:
+                                ans +=dp(i + 1, True, False, pr, j, sm)
+                else:
+                    for j in range(10):
+                        if pr != None and prv != None and (prv > pr < j or prv < pr > j):
+                            ans +=dp(i + 1, True, False, pr, j, sm + 1)
+                        else:
+                            ans +=dp(i + 1, True, False, pr, j, sm)
+        
+            else:
+                ans +=dp(i + 1, False, False, prv, pr, sm)
+                if limit:
+                    
+                    for j in range(1, int(s[i]) + 1):
+                        
+                        if j == int(s[i]):
+                            if pr != None and prv != None and (prv > pr < j or prv < pr > j):
+                                ans +=dp(i + 1, True, True, pr, j, sm + 1)
+                            else:
+                                ans +=dp(i + 1, True, True, pr, j, sm)
+                        else:
+                            if pr != None and prv != None and (prv > pr < j or prv < pr > j):
+                                ans +=dp(i + 1, True, False, pr, j, sm + 1)
+                            else:
+                                ans +=dp(i + 1, True, False, pr, j, sm)
+                else:
+                    for j in range(1, 10):
+                        if pr != None and prv != None and (prv > pr < j or prv < pr > j):
+                            ans +=dp(i + 1, True, False, pr, j, sm + 1)
+                        else:
+                            ans +=dp(i + 1, True, False, pr, j, sm)
+            
+            return ans
+        
+        one = (dp(0, False, True, None, None, 0))
+
+        s = str(num2)
+        dp.cache_clear()
+
+        two = (dp(0, False, True, None, None, 0))
+        # print(one, two)
+        return (two - one)
