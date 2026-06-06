@@ -1,0 +1,15 @@
+class Solution:
+    def numOfWays(self, n: int, m: int) -> int:
+        # code here
+        total_ways = n * m * (n * m - 1)
+        
+        attacking = 0
+        
+        if n >= 2 and m >= 3:
+            attacking += 2 * (n - 1) * (m - 2)
+        if n >= 3 and m >= 2:
+            attacking += 2 * (n - 2) * (m - 1)
+            
+        attacking *= 2
+        
+        return total_ways - attacking
