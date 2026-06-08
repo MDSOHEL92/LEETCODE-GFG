@@ -1,0 +1,19 @@
+'''
+Structure of linked list node
+class Node:
+    def __init__(self,x):
+        self.data=x
+        self.next=None
+
+'''
+class Solution:
+    def compute(self,head):
+        # code here
+        if not head or not head.next:
+            return head
+            
+        head.next = self.compute(head.next)
+        
+        if head.data < head.next.data:
+            return head.next
+        return head
