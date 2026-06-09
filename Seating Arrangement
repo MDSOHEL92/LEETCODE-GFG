@@ -1,0 +1,20 @@
+class Solution:
+    def canSeatAllPeople(self, k, seats):
+        # code here
+        n = len(seats)
+        
+        for i in range(n - 1):
+            if seats[i] == 1 and seats[i + 1] == 1:
+                return False
+        can_seat = 0
+        i = 0
+        while i < n:
+            if seats[i] == 0:
+                left_empty = (i == 0) or (seats[i - 1] == 0)
+                right_empty = (i == n - 1) or (seats[i + 1] == 0)
+                
+                if left_empty and right_empty:
+                    can_seat += 1
+                    seats[i] = 1
+            i += 1
+        return can_seat >= k
