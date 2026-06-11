@@ -1,0 +1,19 @@
+class Solution:
+    def assignEdgeWeights(self, edges: List[List[int]]) -> int:
+        MOD = 10**9 + 7
+        n = len(edges) + 1
+
+        graph = [[] for _ in range(n + 1)]
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+
+        def dfs(node, parent):
+            max_d = 0
+            for nei in graph[node]:
+                if nei != parent:
+                    max_d = max(max_d, 1 + dfs(nei, node))
+            return max_d
+
+        d = dfs(1, 0)
+        return 0 if d == 0 else pow(2, d - 1, MOD)
