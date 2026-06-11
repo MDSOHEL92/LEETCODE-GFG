@@ -1,0 +1,19 @@
+class Solution:
+    def findIndex(self, s):
+        # code here 
+        n = len(s)
+        total_close = s.count(')')
+        
+        open_before = 0
+        close_from = total_close
+        
+        for k in range(n + 1):
+            if open_before == close_from:
+                return k
+                
+            if k < n:
+                if s[k] == '(':
+                    open_before += 1
+                else:
+                    close_from -= 1
+        return -1
