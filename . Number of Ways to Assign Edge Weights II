@@ -1,0 +1,60 @@
+class Solution:
+    def assignEdgeWeights(self, edges: List[List[int]], queries: List[List[int]]) -> List[int]:
+        MOD = 10**9 + 7
+        n = len(edges) + 1
+        
+        # Build graph
+        graph = [[] for _ in range(n + 1)]
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        # Binary lifting for LCA
+        LOG = 17 # 2^17 > 1e5
+        parent = [[0] * (LOG + 1) for _ in range(n + 1)]
+        depth = [0] * (n + 1)
+        
+        # DFS to set depth and parent[node][0]
+        def dfs(node, par):
+            parent[node][0] = par
+            for nei in graph[node]:
+                if nei!= par:
+                    depth[nei] = depth[node] + 1
+                    dfs(nei, node)
+        
+        dfs(1, 0)
+        
+        # Build binary lifting table
+        for j in range(1, LOG + 1):
+            for i in range(1, n + 1):
+                parent[i][j] = parent[parent[i][j-1]][j-1]
+        
+        def lca(u, v):
+            if depth[u] < depth[v]:
+                u, v = v, u
+            # Lift u to depth of v
+            diff = depth[u] - depth[v]
+            for j in range(LOG + 1):
+                if diff & (1 << j):
+                    u = parent[u][j]
+            if u == v:
+                return u
+            # Lift both
+            for j in range(LOG, -1, -1):
+                if parent[u][j]!= parent[v][j]:
+                    u = parent[u][j]
+                    v = parent[v][j]
+            return parent[u][0]
+        
+        def dist(u, v):
+            w = lca(u, v)
+            return depth[u] + depth[v] - 2 * depth[w]
+        
+        ans = []
+        for u, v in queries:
+            d = dist(u, v) # number of edges
+            if d == 0:
+                ans.append(0)
+            else:
+                ans.append(pow(2, d - 1, MOD))
+        return ans
