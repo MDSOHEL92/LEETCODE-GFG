@@ -1,0 +1,17 @@
+MOD = 10**9 + 7
+
+class Solution:
+    def computeValue(self, n):
+        # Precompute factorials up to 2n
+        fact = [1] * (2*n + 1)
+        for i in range(1, 2*n + 1):
+            fact[i] = (fact[i-1] * i) % MOD
+        
+        # Fermat's Little Theorem for modular inverse
+        def modinv(x):
+            return pow(x, MOD-2, MOD)
+        
+        # nCr = fact[n] / (fact[r] * fact[n-r])
+        numerator = fact[2*n]
+        denominator = (fact[n] * fact[n]) % MOD
+        return (numerator * modinv(denominator)) % MOD
