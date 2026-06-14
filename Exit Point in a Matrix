@@ -1,0 +1,17 @@
+class Solution:
+    def exitPoint(self, mat):
+        # code here
+        dir = ((0, 1), (1, 0), (0, -1), (-1, 0))
+        dir_ind = 0
+        r, c = 0, 0
+        last = None
+        while 0 <= r < len(mat) and 0 <= c < len(mat[0]):
+            last = (r, c)
+            if mat[r][c] == 1:
+                dir_ind += 1
+                mat[r][c] = 0
+                
+            dx, dy = dir[dir_ind % len(dir)]
+            r = r + dx
+            c = c + dy
+        return last
