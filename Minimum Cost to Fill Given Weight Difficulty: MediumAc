@@ -1,0 +1,16 @@
+class Solution:
+    def minimumCost(self, cost, w):
+        # code here
+        from functools import cache
+        @cache
+        def dp(ix=len(cost)-1,w=w):
+            nonlocal cost
+            if w==0:
+                return 0
+            if ix<0 or w<0:
+                return float('inf')
+            if cost[ix]==-1:
+                return dp(ix-1,w)
+            return min(dp(ix-1,w),dp(ix,w-ix-1)+cost[ix])
+        ret=dp()
+        return ret if ret!=float('inf') else -1
