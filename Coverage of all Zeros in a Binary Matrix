@@ -1,0 +1,40 @@
+class Solution:
+    def findCoverage(self, mat):
+        rows, cols = len(mat), len(mat[0])
+        coverage = 0
+        dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)] # up, down, left, right
+
+        for i in range(rows):
+            for j in range(cols):
+                if mat[i][j] == 0:
+                    for di, dj in dirs:
+                        ni, nj = i + di, j + dj
+                        # check boundary + if 1 exists in that direction
+                        while 0 <= ni < rows and 0 <= nj < cols:
+                            if mat[ni][nj] == 1:
+                                coverage += 1
+                                break
+                            ni += di
+                            nj += dj
+        return coverage
+###############################################################
+###############################################################
+
+class Solution:
+    def findCoverage(self, mat):
+        rows, cols = len(mat), len(mat[0])
+        total = 0
+        
+        for i in range(rows):
+            for j in range(cols):
+                if mat[i][j] == 0:
+                    # check up
+                    if i > 0 and mat[i-1][j] == 1: total += 1
+                    # check down 
+                    if i < rows-1 and mat[i+1][j] == 1: total += 1
+                    # check left
+                    if j > 0 and mat[i][j-1] == 1: total += 1
+                    # check right
+                    if j < cols-1 and mat[i][j+1] == 1: total += 1
+        
+        return total
