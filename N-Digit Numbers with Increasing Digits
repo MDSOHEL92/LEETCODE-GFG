@@ -1,0 +1,18 @@
+class Solution:
+    def solve(self, last, n, c, curr, ans):
+        if n - c > 9 - last:
+            return
+
+        if n - c == 0:
+            ans.append(curr)
+        
+        for i in range(last + 1, 10):
+            self.solve(i, n, c + 1, curr * 10 + i, ans)
+
+    def increasingNumbers(self, n):
+        # code here
+        ans = []
+        if n == 1:
+            ans.append(0)
+        self.solve(0, n, 0, 0, ans)
+        return ans
