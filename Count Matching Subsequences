@@ -1,0 +1,23 @@
+class Solution:
+    def countWays(self, s1, s2):
+        n = len(s1)
+        m = len(s2)
+        MOD = 10**9 + 7
+        
+        # dp[j] will store the number of subsequences of s1 matching s2[0...j-1]
+        dp = [0] * (m + 1)
+        
+        # Base case: An empty s2 can always be formed in 1 way (empty subsequence)
+        dp[0] = 1
+        
+        # Fill the DP array
+        for i in range(1, n + 1):
+            # Traverse backwards to use values from the previous iteration of the outer loop
+            for j in range(m, 0, -1):
+                if s1[i-1] == s2[j-1]:
+                    dp[j] = (dp[j] + dp[j-1]) % MOD
+                else:
+                    # dp[j] remains dp[j] (which is equivalent to dp[i-1][j])
+                    pass
+                    
+        return dp[m]
