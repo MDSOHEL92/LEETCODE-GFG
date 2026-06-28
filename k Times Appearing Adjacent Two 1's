@@ -1,0 +1,13 @@
+class Solution:
+    def countStrings(self, n, k):
+        from functools import cache
+        @cache
+        def dfs(n=n,k=k,p=''):
+            if n==0:
+                return k==0
+            if k<0:
+                return 0
+            ret=dfs(n-1,k,'0')
+            ret+=dfs(n-1,k-(1 if p=='1' else 0),'1')
+            return ret%1_000_000_007
+        return dfs()
