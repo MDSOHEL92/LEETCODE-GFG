@@ -1,0 +1,33 @@
+class Solution:
+    def findSafeWalk(self, grid: List[List[int]], health: int) -> bool:
+
+        seen = defaultdict(int)
+        directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+
+        def dfs(i, j, h):
+
+            if (i, j) == (len(grid) - 1, len(grid[0]) - 1):
+                if h > 0:
+                    return True
+                return False
+
+            if ((i, j) in seen and seen[(i, j)] >= h) or h == 0:
+                return False
+
+            seen[(i, j)] = h
+
+            for x, y in directions:
+                if i + x < 0 or i + x >= len(grid): continue
+                if j + y < 0 or j + y >= len(grid[0]): continue
+                if grid[i + x][j + y] == 1:
+                    if h - 1 <= 0: continue
+                    ans = dfs(i + x, j + y, h - 1)
+                else:    
+                    ans = dfs(i + x, j + y, h)
+
+                if ans: return ans
+
+
+        ans = (dfs(0, 0, health - grid[0][0]))
+
+        return ans if ans else False
