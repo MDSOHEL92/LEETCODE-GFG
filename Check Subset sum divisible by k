@@ -1,0 +1,19 @@
+class Solution:
+    def divisibleByK(self, arr, k):
+        # code here
+        remainders = set()
+
+        for num in arr:
+            rem = num % k
+            new_remainders = {rem}  # subset with only current element
+
+            # extend existing subsets
+            for r in remainders:
+                new_remainders.add((r + rem) % k)
+
+            remainders |= new_remainders  # merge
+
+            if 0 in remainders:  # early exit
+                return True
+
+        return False
