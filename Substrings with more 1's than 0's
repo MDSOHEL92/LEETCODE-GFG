@@ -1,0 +1,39 @@
+class Solution:
+    def countSubstring(self, s):
+        n = len(s)
+        
+        # Step 1: Convert 0 -> -1, 1 -> +1 and make prefix sums
+        prefix = [0]
+        curr = 0
+        for ch in s:
+            curr += 1 if ch == '1' else -1
+            prefix.append(curr)
+        
+        # Step 2: Coordinate compression because prefix can be -n to +n
+        sorted_vals = sorted(set(prefix))
+        rank = {v: i+1 for i, v in enumerate(sorted_vals)} # 1-indexed for BIT
+        
+        # Step 3: BIT/Fenwick Tree to count prefix[i] < prefix[j]
+        size = len(sorted_vals)
+        bit = [0] * (size + 1)
+        
+        def update(idx, val):
+            while idx <= size:
+                bit[idx] += val
+                idx += idx & -idx
+        
+        def query(idx):
+            res = 0
+            while idx > 0:
+                res += bit[idx]
+                idx -= idx & -idx
+            return res
+        
+        ans = 0
+        for p in prefix:
+            r = rank[p]
+            # count of previous prefix sums < current p
+            ans += query(r - 1)
+            update(r, 1)
+        
+        return ans
