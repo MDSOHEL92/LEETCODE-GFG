@@ -1,0 +1,16 @@
+class Solution:
+
+    def maxCharGap(self, s: str) -> int:
+        # code here
+        first_pos = {}
+        max_gap = -1
+        
+        for i, ch in enumerate(s):
+            if ch in first_pos:
+                gap = i - first_pos[ch] - 1
+                max_gap = max(max_gap, gap)
+            else:
+                first_pos[ch] = i
+        return max_gap
+
+      
